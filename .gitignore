@@ -10,5 +10,4 @@ archives/*
 .git
 .idea/
 .git/
-
-
+/.deploy_git/
