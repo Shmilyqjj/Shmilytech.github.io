@@ -3,7 +3,22 @@
 首先感谢https://github.com/wujun234/hexo-theme-tree.git开源
 
 ### 2 配置主题
+找个空文件夹 hexo init
 
+npm install
+
+主题放入themes内
+修改外部_config.yml的theme为新主题
+
+npm install hexo-deployer-git --save
+
+修改_config.yml的deploy
+deploy:
+  type: git
+  repo: 
+    github: 你的github仓库地址
+    # coding: 你的coding仓库地址
+  branch: master
 
 ### 3 导航栏和图标
 - 导航栏：当前没有配置化，需要修改`themes/tree/layout/_partial` 路径下的 `header.ejs` 文件
