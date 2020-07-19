@@ -98,6 +98,6 @@ theme: hexo-theme-tree
 deploy:
   - type: git
     repo:
-      github: https://github.com/Shmilyqjj/Shmilytech.github.io
       coding: https://e.coding.net/Shmilyqjj/shmilytech.github.io/shmilytech.coding.io.git
+      github: https://github.com/Shmilyqjj/Shmilytech.github.io
     branch: master
