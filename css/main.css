@@ -31,7 +31,7 @@ a {
 	top: 0px;
 	width: 100%;
 	height: 50px;
-	background: #2b6964;
+	background: #3f4448;
 	z-index: 98;
     display: flex;
     align-items: baseline;
@@ -94,7 +94,7 @@ a {
 	left: -250px;
 	height: 100%;
 	top: 0px;
-	background: #41555d;
+	background: #3f4448;
 	z-index: 99;
 }
 #sidebar.on {
@@ -109,9 +109,9 @@ a {
 	height: 35px;
 	margin: 5px 10px 5px 10px;
 	border-radius:5px;
-	background: #3f4448;
+	background: #a3a3a3;
 	text-indent: 20px;
-	color: #64cfff;
+	color: #fffc00;
 }
 .sidebar-toc {
 	position: absolute;
