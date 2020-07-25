@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		Mysql Event Scheduler | 
+	 
+	佳境的技术专区
+	</title>
+	
+	<!-- keywords,description -->
+	
+		<meta name="keywords" content="事件调度器," />
+	 
+		<meta name="description" content="Mysql事件调度器" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmilytech.github.io@hexo/themes/hexo-theme-tree/source/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">佳境的技术专区</a>
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="https://shmily-qjj.top/" class="menu-item-link" target="_self">
+				<input type="image" src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/img/logo/gotoMain.png" width="90" height="35" alt="回到主站"/>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://shmily-qjj.top/about/" target="_blank" rel="noopener" class="menu-item-link">
+				<input type="image" src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/img/logo/aboutMe.png" width="90" height="35" alt="关于我"/>
+			</a>
+		</li>
+
+		<li class="menu-item">
+			<a href="https://github.com/Shmilyqjj" class="menu-item-link" target="_blank">
+<!--				<i class="fa fa-github fa-2x"></i>-->
+				<input type="image" src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/img/logo/myGithub.png" width="90" height="35" alt="关于我"/>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01数据结构与算法
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/6a894937/">
+										基础算法学习
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02计算机网络
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/undefined/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03操作体统
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/undefined/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04编程语言
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Java
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/508b5c7/">
+										系统学习JVM
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/6f97dc89/">
+										线程进程与锁
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										05数据库
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										MySQL
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										原理深入
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/7c15e85/">
+										MySQL索引原理深入
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/1f7eb1b3/">
+										数据库事务ACID理解
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										操作
+									</a>
+									
+							<ul>
+								<li class="file active">
+									<a href="/3c26421b/">
+										Mysql Event Scheduler
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/96009187/">
+										浅谈group by与distinct去重
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06分布式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/undefined/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07容器
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/undefined/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08大数据
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										其他
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/4b21953d/">
+										分享我的技术调研流程
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/39595/">
+										记一次参加QCon全球软件开发大会
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										平台运维
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/38328/">
+										CentOS7安装CDH6全程记录
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据仓库
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/44511/">
+										Alluxio-基于内存的虚拟分布式存储系统
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/5f26355/">
+										Apache Kudu总结
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/26078/">
+										Sqoop学习笔记
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据可视化
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/174820fd/">
+										Apache Zeppelin初探
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										离线计算
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/7fbbfd34/">
+										Hive3.x新特性
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/welcome/">
+										欢迎
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	Mysql Event Scheduler
+</h1>
+<div class="article-meta">
+	
+	<span>佳境Shmily</span>
+	<span>2019-11-15 21:25:04</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/技术/">技术</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<h1 id="Mysql事件调度器"><a href="#Mysql事件调度器" class="headerlink" title="Mysql事件调度器"></a>Mysql事件调度器</h1><p>工作的时候遇到一张表需要每天Truncate，就想到了Mysql的Event Scheduler，但是又忘了它的语法了，所以这里来复习一下。  </p>
+<h2 id="什么是Event-Scheduler"><a href="#什么是Event-Scheduler" class="headerlink" title="什么是Event Scheduler"></a>什么是Event Scheduler</h2><p>事件调度器，可以作为定时调度器，类似于Crontab，可以取代部分操作系统任务调度器的定时任务工作。Mysql在5.1版本后新增了事件调度器，它可以支持秒级调度，很实用方便。<br>时间调度器也可以看作是一个触发器，是针对某个表进行操作的，时间调度器执行采用了单独一个线程，可通过<strong><em>SHOW PROCESSLIST</em></strong>命令查看 </p>
+<h2 id="Event-Scheduler语法"><a href="#Event-Scheduler语法" class="headerlink" title="Event Scheduler语法"></a>Event Scheduler语法</h2><pre><code class="sql">CREATE
+    [DEFINER = { user | CURRENT_USER }]
+    EVENT
+    [IF NOT EXISTS]
+    event_name
+    ON SCHEDULE schedule
+    [ON COMPLETION [NOT] PRESERVE]
+    [ENABLE | DISABLE | DISABLE ON SLAVE]
+    [COMMENT &#39;string&#39;]
+    DO event_body;
+
+schedule:
+    AT timestamp [+ INTERVAL interval] ...
+  | EVERY interval
+    [STARTS timestamp [+ INTERVAL interval] ...]
+    [ENDS timestamp [+ INTERVAL interval] ...]
+
+interval:
+    quantity {YEAR | QUARTER | MONTH | DAY | HOUR | MINUTE |
+              WEEK | SECOND | YEAR_MONTH | DAY_HOUR | DAY_MINUTE |
+              DAY_SECOND | HOUR_MINUTE | HOUR_SECOND | MINUTE_SECOND}</code></pre>
+<p>语法说明：</p>
+<ul>
+<li>DEFINER：指定可执行该定时器的MySQL账号，user的格式是’user_name’@’host_name’，CURRENT_USER或CURRENT_USER()，单引号是需要在语句中输入的。如果不指定，默认是DEFINER = CURRENT_USER。</li>
+<li>event_name：事件名称，最大64个字符，不区分大小写，MyEvent和myevent是一样的，命名规则和其他MySQL对象是一样的。</li>
+<li>ON SCHEDULE schedule：ON SCHEDULE指定事件何时执行，执行的频率和执行的时间段，有AT和EVERY两种形式。</li>
+<li>[ON COMPLETION [NOT] PRESERVE]：可选，preserve是保持的意思，这里是说这个定时器第一次执行完成以后是否还需要保持，如果是NOT PRESERVE，该定时器只执行一次，完成后自动删除事件；没有NOT，该定时器会多次执行，可以理解为这个定时器是持久性的。默认是NOT PRESERVE。</li>
+<li>[ENABLE | DISABLE | DISABLE ON SLAVE]：可选，是否启用该事件，ENABLE-启用，DISABLE-禁用，可使用alter event语句修改该状态。DISABLE ON SLAVE是指在主备复制的数据库服务器中，在备机上也创建该定时器，但是不执行。</li>
+<li>COMMENT: 注释，必须用单引号括住。</li>
+<li>DO event_body：事件要执行的SQL语句，可以是一个SQL，也可以是使用BEGIN和END的复合语句，和存储过程相同。</li>
+</ul>
+<h2 id="ON-SCHEDULE时间类型"><a href="#ON-SCHEDULE时间类型" class="headerlink" title="ON SCHEDULE时间类型"></a>ON SCHEDULE时间类型</h2><p>两种时间类型<strong><em>AT timestamp</em></strong>和<strong><em>Every interval</em></strong>  </p>
+<h3 id="AT-timestamp"><a href="#AT-timestamp" class="headerlink" title="AT timestamp"></a>AT timestamp</h3><p>用于只执行一次的事件。执行的时间由timestamp指定，timestamp必须包含完整的日期和时间，即年月日时分秒都要有。可以使用DATETIME或TIMESTAMP类型，或者可以转换成时间的值，例如“2018-01-21 00:00:00”。如果指定是时间是过去的时间，该事件不会执行，并生成警告。  </p>
+<pre><code class="sql">mysql&gt; create table test(id int,name varchar(255));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&gt; select NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2019-11-16 11:30:59 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql&gt; create event insert_test ON SCHEDULE AT &#39;2019-11-16 11:30:59&#39; DO show tables;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql&gt; show warnings\G;
+*************************** 1. row ***************************
+  Level: Note
+   Code: 1588
+Message: Event execution time is in the past and ON COMPLETION NOT PRESERVE is set. The event was dropped immediately after creation.
+1 row in set (0.00 sec)
+
+ERROR: 
+No query specified
+
+mysql&gt; create event insert_test ON SCHEDULE AT &#39;2019-11-16 11:34:59&#39; DO show tables; 
+Query OK, 0 rows affected (0.01 sec)
+
+mysql&gt; create event insert_test ON SCHEDULE AT &#39;2019-11-16 11:37:59&#39; DO insert into test(id,name) values (1,&#39;qjj&#39;); 
+Query OK, 0 rows affected (0.00 sec)</code></pre>
+<p>时间过后我发现我的test表里仍然没数据</p>
+<pre><code class="sql">mysql&gt; show variables like &quot;event_scheduler&quot;;
++-----------------+-------+
+| Variable_name   | Value |
++-----------------+-------+
+| event_scheduler | OFF    |
++-----------------+-------+
+1 row in set (0.00 sec)</code></pre>
+<p>原因是我没开启event_scheduler<br>vim /etc/my.cnf 在[mysqld]这一栏下添加<strong><em>event_scheduler = ON</em></strong>来永久启用event_scheduler<br>重启mysql服务<strong><em>systemctl restart mysqld.service</em></strong></p>
+<pre><code class="sql">mysql&gt; select NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2019-11-16 11:40:37 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql&gt; create event insert_test ON SCHEDULE AT &#39;2019-11-16 11:41:37&#39; DO insert into test(id,name) values (1,&#39;qjj&#39;);       
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; select * from test;                                                               +------+------+
+| id   | name |
++------+------+
+|    1 | qjj  |
++------+------+
+1 row in set (0.00 sec)
+
+mysql&gt; show events;
+Empty set (0.00 sec)
+
+# 一小时后执行 命令示例 
+mysql&gt; CREATE EVENT update_test ON SCHEDULE AT CURRENT_TIMESTAMP + INTERVAL 1 HOUR DO UPDATE test SET id = 2;   
+Query OK, 0 rows affected (0.00 sec)</code></pre>
+<p>上述结果说明:必须先开启event_scheduler之后event才会生效，AT timestamp的方式只会在指定时间点执行一次，然后这个event就会被销毁，如果指定的时间是过去的是时间点，则这个event会有警告，且不执行也不保留event。</p>
+<h3 id="Every-interval"><a href="#Every-interval" class="headerlink" title="Every interval"></a>Every interval</h3><p>让事件定期执行，每多久执行一次<br>ON SCHEDULE后面时间写法的几个栗子：<br>EVERY 6 WEEK 每六周<br>EVERY 20 second 每20秒<br>EVERY 3 MONTH STARTS CURRENT_TIMESTAMP + INTERVAL 1 WEEK 一周以后开始，每隔三个月<br>EVERY 2 WEEK STARTS CURRENT_TIMESTAMP + INTERVAL ‘6:15’ HOUR_MINUTE 6小时15分钟以后开始，每隔两周执行<br>EVERY 1 DAY STARTS CURRENT_TIMESTAMP + INTERVAL 5 MINUTE ENDS CURRENT_TIMESTAMP + INTERVAL 2 WEEK  5分钟以后开始，每隔一天执行，两周后结束  </p>
+<p>举个栗子  </p>
+<pre><code class="sql">mysql&gt; create event daily_truncate_test
+    -&gt; ON SCHEDULE
+    -&gt; EVERY 1 DAY
+    -&gt; COMMENT &#39;每天执行一次清空test表数据&#39;
+    -&gt; DO
+    -&gt; truncate test;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; mysql&gt; show events;
++------+---------------------+-------------+-----------+-----------+---------------------+----------------+----------------+---------------------+------+---------+------------+----------------------+----------------------+--------------------+
+| Db   | Name                | Definer     | Time zone | Type      | Execute at          | Interval value | Interval field | Starts              | Ends | Status  | Originator | character_set_client | collation_connection | Database Collation |
++------+---------------------+-------------+-----------+-----------+---------------------+----------------+----------------+---------------------+------+---------+------------+----------------------+----------------------+--------------------+
+| test | daily_truncate_test | root@CDH066 | SYSTEM    | RECURRING | NULL                | 1              | DAY            | 2019-11-16 12:10:36 | NULL | ENABLED |          1 | utf8                 | utf8_unicode_ci      | utf8_unicode_ci    |
+| test | update_test         | root@CDH066 | SYSTEM    | ONE TIME  | 2019-11-16 12:58:52 | NULL           | NULL           | NULL                | NULL | ENABLED |          1 | utf8                 | utf8_unicode_ci      | utf8_unicode_ci    |
++------+---------------------+-------------+-----------+-----------+---------------------+----------------+----------------+---------------------+------+---------+------------+----------------------+----------------------+--------------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; SHOW PROCESSLIST;
++----+-----------------+--------------+------+---------+------+-----------------------------+------------------+
+| Id | User            | Host         | db   | Command | Time | State                       | Info             |
++----+-----------------+--------------+------+---------+------+-----------------------------+------------------+
+|  1 | event_scheduler | localhost    | NULL | Daemon  |  721 | Waiting for next activation | NULL             |
+|  7 | root            | CDH066:34902 | test | Query   |    0 | starting                    | SHOW PROCESSLIST |
++----+-----------------+--------------+------+---------+------+-----------------------------+------------------+
+2 rows in set (0.00 sec)
+
+
+# 示例2 指定每天具体时间点的event事件
+CREATE EVENT truncate_with_time
+ON SCHEDULE EVERY 1 day STARTS date_add(concat(current_date(), &#39; 00:00:00&#39;), interval 0 second)
+ON COMPLETION PRESERVE ENABLE
+COMMENT
+DO
+TRUNCATE test;</code></pre>
+<h2 id="操作和查看事件"><a href="#操作和查看事件" class="headerlink" title="操作和查看事件"></a>操作和查看事件</h2><pre><code class="sql">show events;  # 查看事件及其状态
+ALTER EVENT daily_truncate_test DISABLE;  # 禁用指定事件
+ALTER EVENT daily_truncate_test ENABLE;   # 启用指定事件
+ALTER EVENT daily_truncate_test RENAME TO daily_truncate;   # 重命名事件
+ALTER EVENT test.daily_truncate_test RENAME TO qjj_test.daily_truncate_test;    # 事件是数据库层面的，可以把事件从一个数据库移动到另一个数据库(另一个数据库要有对应的表)  
+DROP EVENT daily_truncate;   # 删除事件</code></pre>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Mysql作为最热门的关系型数据库之一，有很多东西值得我们去探索，好记性不如烂笔头，写了博客，对事件调度器的理解更加深刻了。</p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/7fbbfd34/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/96009187/">
+                浅谈group by与distinct去重
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: 'zUyVEaHo59RUUwiPTChPEeBj-gzGzoHsz',
+			appKey: 'xIEyTcrkTuJLz6ewPbpTj8mz',
+			placeholder: '欢迎评论...',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2020-<span id="footerYear"></span> 
+	<a href="/">佳境Shmily</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Theme <a href="//github.com/wujun234/hexo-theme-tree" target="_blank">Tree</a>
+	by <a href="//github.com/wujun234" target="_blank">WuJun</a>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>
