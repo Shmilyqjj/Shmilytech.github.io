@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		浅谈group by与distinct去重 | 
+	 
+	佳境的技术专区
+	</title>
+	
+	<!-- keywords,description -->
+	
+		<meta name="keywords" content="group by与distinct," />
+	 
+		<meta name="description" content="group by与distinct去重" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmilytech.github.io@hexo/themes/hexo-theme-tree/source/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">佳境的技术专区</a>
+
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="https://shmily-qjj.top/" class="menu-item-link" target="_self">
+				回到主站
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="/about" class="menu-item-link">关于我</a>
+		</li>
+
+		<li class="menu-item">
+			<a href="https://github.com/Shmilyqjj" class="menu-item-link" target="_blank">
+				<i class="fa fa-github fa-2x"></i>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01数据结构与算法
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/04/27/01%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/">
+										基础算法学习
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02计算机网络
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/07/14/02%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/hello-world/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03操作体统
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/07/14/03%E6%93%8D%E4%BD%9C%E4%BD%93%E7%BB%9F/hello-world/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04编程语言
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Java
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/03/21/04%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/%E7%B3%BB%E7%BB%9F%E5%AD%A6%E4%B9%A0JVM/">
+										系统学习JVM
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/02/11/04%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Java/%E7%BA%BF%E7%A8%8B%E8%BF%9B%E7%A8%8B%E4%B8%8E%E9%94%81/">
+										线程进程与锁
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										05数据库
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										MySQL
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										原理深入
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/03/24/05%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E5%8E%9F%E7%90%86%E6%B7%B1%E5%85%A5/MySQL%E7%B4%A2%E5%BC%95%E5%8E%9F%E7%90%86%E6%B7%B1%E5%85%A5/">
+										MySQL索引原理深入
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/12/28/05%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E5%8E%9F%E7%90%86%E6%B7%B1%E5%85%A5/%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BA%8B%E5%8A%A1ACID%E7%90%86%E8%A7%A3/">
+										数据库事务ACID理解
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										操作
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/11/15/05%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%93%8D%E4%BD%9C/Mysql%20Event%20Scheduler/">
+										Mysql Event Scheduler
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file active">
+									<a href="/2019/11/13/05%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%93%8D%E4%BD%9C/%E6%B5%85%E8%B0%88group%20by%E4%B8%8Edistinct%E5%8E%BB%E9%87%8D/">
+										浅谈group by与distinct去重
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/14/05%E6%95%B0%E6%8D%AE%E5%BA%93/hello-world/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06分布式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/07/14/06%E5%88%86%E5%B8%83%E5%BC%8F/hello-world/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07容器
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/07/14/07%E5%AE%B9%E5%99%A8/hello-world/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08大数据
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/03/08%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%88%86%E4%BA%AB%E6%88%91%E7%9A%84%E6%8A%80%E6%9C%AF%E8%B0%83%E7%A0%94%E6%B5%81%E7%A8%8B/">
+										分享我的技术调研流程
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										平台运维
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/10/29/08%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%B9%B3%E5%8F%B0%E8%BF%90%E7%BB%B4/CentOS7%E5%AE%89%E8%A3%85CDH6%E5%85%A8%E7%A8%8B%E8%AE%B0%E5%BD%95/">
+										CentOS7安装CDH6全程记录
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据仓库
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/01/01/08%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/Alluxio-%E5%9F%BA%E4%BA%8E%E5%86%85%E5%AD%98%E7%9A%84%E8%99%9A%E6%8B%9F%E5%88%86%E5%B8%83%E5%BC%8F%E5%AD%98%E5%82%A8%E7%B3%BB%E7%BB%9F/">
+										Alluxio-基于内存的虚拟分布式存储系统
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/05/08%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/Apache%20Kudu%E6%80%BB%E7%BB%93/">
+										Apache Kudu总结
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/11/03/08%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/Sqoop%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+										Sqoop学习笔记
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据可视化
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2020/02/11/08%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/Apache%20Zeppelin%E5%88%9D%E6%8E%A2/">
+										Apache Zeppelin初探
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										离线计算
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2019/12/27/08%E5%A4%A7%E6%95%B0%E6%8D%AE/%E7%A6%BB%E7%BA%BF%E8%AE%A1%E7%AE%97/Hive3.x%E6%96%B0%E7%89%B9%E6%80%A7/">
+										Hive3.x新特性
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2019/10/21/08%E5%A4%A7%E6%95%B0%E6%8D%AE/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%8F%82%E5%8A%A0QCon%E5%85%A8%E7%90%83%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E5%A4%A7%E4%BC%9A/">
+										记一次参加QCon全球软件开发大会
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/2020/07/14/hello-world/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	浅谈group by与distinct去重
+</h1>
+<div class="article-meta">
+	
+	<span>佳境Shmily</span>
+	<span>2019-11-13 20:45:37</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/技术/">技术</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>今天带我的老哥让我改一下报警模块，把一些联系方式等信息存在Mysql里，方便以后管理和维护，很简单的东西，为了减少Mysql并发压力，我想每次报警只查询一次数据库，但子查询返回的结果有重复记录，于是我写了个类似<strong><em>SELECT col1,col2,col3,col4 FROM (select…) GROUP BY col1;</em></strong>的语句来去重，可以正常执行不报错且达到了目的就直接使用了，也没深究。直到老哥看了代码说找我说老弟呀你这个逻辑，有点问题呀。。。  </p>
+<p>按理说，GROUP BY都是要与聚合函数搭配使用的，所以确实是逻辑有问题，写代码规范很重要，规范的同时还要弄清楚原理，于是就有了这篇博客，详细说一下使用GROUP BY和DISTINCT去重…  </p>
+<h2 id="DISTINCT去重"><a href="#DISTINCT去重" class="headerlink" title="DISTINCT去重"></a>DISTINCT去重</h2><p>DISTINCT可多字段去重，每个字段的值都完全相同的情况下使用DISTINCT去重<br>DISTINCT也可以单个字段值去重 select(name),id from table;</p>
+<pre><code class="sql">mysql&gt; select name,tel,wxid from person_info where wxid in (&#39;SCALA&#39;);    
++--------+-------+-------+
+| name   | tel   | wxid  |
++--------+-------+-------+
+| scala  | 10010 | SCALA |
+| scala1 | 10010 | SCALA |
++--------+-------+-------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select distinct name,tel,wxid from person_info where wxid in (&#39;SCALA&#39;);
++--------+-------+-------+
+| name   | tel   | wxid  |
++--------+-------+-------+
+| scala  | 10010 | SCALA |
+| scala1 | 10010 | SCALA |
++--------+-------+-------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select distinct tel from person_info where wxid in (&#39;SCALA&#39;);          
++-------+
+| tel   |
++-------+
+| 10010 |
++-------+
+1 row in set (0.00 sec)
+
+mysql&gt; select distinct name from person_info where wxid in (&#39;SCALA&#39;);    
++--------+
+| name   |
++--------+
+| scala  |
+| scala1 |
++--------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select distinct tel,wxid from person_info where wxid in (&#39;SCALA&#39;);       
++-------+-------+
+| tel   | wxid  |
++-------+-------+
+| 10010 | SCALA |
++-------+-------+
+1 row in set (0.00 sec)</code></pre>
+<p>通过上面的实验可以看出，DISTINCT的去重效果是 如果取出的所有字段的值都完全相同则可以去重，如果取出的字段不完全相同，就无法去重。</p>
+<h2 id="GROUP-BY"><a href="#GROUP-BY" class="headerlink" title="GROUP BY"></a>GROUP BY</h2><p>GROUP BY与聚合函数连用，主要用于分组聚合，但它也可以用来去重，与DISTINCT相反，它支持多个字段值不完全相同的情况下去重，但会舍弃一些值。<br>假如A,B,C三个字段，A和B两个字段在多条记录中值都相同，但C不同，使用GROUP BY去重后只会得到一条记录，C的值只保留一个，其余记录C字段不同的值舍弃。  </p>
+<pre><code class="sql">mysql&gt; select distinct name,tel,wxid from person_info where wxid in (&#39;SCALA&#39;); 
++--------+-------+-------+
+| name   | tel   | wxid  |
++--------+-------+-------+
+| scala  | 10010 | SCALA |
+| scala1 | 10010 | SCALA |
+| scala2 | 10010 | SCALA |
++--------+-------+-------+
+3 rows in set (0.00 sec)
+
+# GROUP BY的正确用法  分组聚合
+mysql&gt; select count(name),tel,wxid from person_info group by tel;                  +-------------+-------+--------+
+| count(name) | tel   | wxid   |
++-------------+-------+--------+
+|           1 | 10000 | SBT    |
+|           3 | 10010 | SCALA  |
+|           1 | 10086 | PYTHON |
+|           1 | 110   | QJJ    |
+|           1 | 114   | JAVA   |
+|           1 | 119   | MAVEN  |
+|           1 | 120   | JJQ    |
++-------------+-------+--------+
+7 rows in set (0.00 sec)
+
+# 报警模块不希望重复报警，所以只想获取一个电话号码   下面的语句逻辑有问题，不符合GROUP BY的使用规范，但是能执行
+mysql&gt; select name,tel,wxid from person_info where wxid in (&#39;SCALA&#39;) group by tel;
++-------+-------+-------+
+| name  | tel   | wxid  |
++-------+-------+-------+
+| scala | 10010 | SCALA |
++-------+-------+-------+
+1 row in set (0.00 sec)
+
+# 改成符合使用规范的  
+mysql&gt; select max(name),tel,wxid from person_info where wxid in (&#39;SCALA&#39;) group by tel;
++-----------+-------+-------+
+| max(name) | tel   | wxid  |
++-----------+-------+-------+
+| scala2    | 10010 | SCALA |
++-----------+-------+-------+
+1 row in set (0.00 sec)
+mysql&gt; select min(name),tel,wxid from person_info where wxid in (&#39;SCALA&#39;) group by tel;
++-----------+-------+-------+
+| min(name) | tel   | wxid  |
++-----------+-------+-------+
+| scala     | 10010 | SCALA |
++-----------+-------+-------+
+1 row in set (0.00 sec)
+
+# 
+mysql&gt; select name,tel,wxid from person_info where wxid in (&#39;SCALA&#39;) group by tel,name;
++--------+-------+-------+
+| name   | tel   | wxid  |
++--------+-------+-------+
+| scala  | 10010 | SCALA |
+| scala1 | 10010 | SCALA |
+| scala2 | 10010 | SCALA |
++--------+-------+-------+
+3 rows in set (0.00 sec)
+
+mysql&gt; select name,tel,wxid from person_info where wxid in (&#39;SCALA&#39;) group by tel,tel;
++-------+-------+-------+
+| name  | tel   | wxid  |
++-------+-------+-------+
+| scala | 10010 | SCALA |
++-------+-------+-------+
+1 row in set (0.00 sec)</code></pre>
+<p>从上面实验可以得出的结论:<br>如果只需要tel和wxid两个字段，无所谓name的字段值，就可以用GROUP BY的方式去重，但是也要尽量写得规范。<br>如果需要name字段的值，就不能用GROUP BY来去重了。  </p>
+<h2 id="问题情景重现"><a href="#问题情景重现" class="headerlink" title="问题情景重现"></a>问题情景重现</h2><p>报警有两种方式，一种是传人名，还有一种是传组名，人与组是多对多关系<br>联系方式信息存为两张表，person_info和group_info,大致如下<br>name 人名，tel是电话，wxid是微信，groupname是组名</p>
+<pre><code class="sql">mysql&gt; show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| group_info     |
+| persion_info   |
++----------------+
+2 rows in set (0.00 sec)
+
+mysql&gt; desc person_info;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| name  | varchar(255) | NO   | PRI | NULL    |       |
+| tel   | varchar(255) | NO   |     | NULL    |       |
+| wxid  | varchar(255) | NO   |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql&gt; desc group_info;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| name      | varchar(255) | NO   | PRI | NULL    |       |
+| groupname | varchar(255) | NO   |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql&gt; select * from person_info;
++--------+-------+--------+
+| name   | tel   | wxid   |
++--------+-------+--------+
+| java   | 114   | JAVA   |
+| jjq    | 120   | JJQ    |
+| maven  | 119   | MAVEN  |
+| python | 10086 | PYTHON |
+| qjj    | 110   | QJJ    |
+| sbt    | 10000 | SBT    |
+| scala  | 10010 | SCALA  |
++--------+-------+--------+
+7 rows in set (0.00 sec)
+
+mysql&gt; select * from group_info;
++--------+-------------+
+| name   | groupname   |
++--------+-------------+
+| java   | languages   |
+| jjq    | person      |
+| maven  | build-tools |
+| python | languages   |
+| qjj    | person      |
+| sbt    | build-tools |
+| scala  | languages   |
++--------+-------------+
+7 rows in set (0.00 sec)</code></pre>
+<p>报警接口传进来的参数可能是多个人名或者组名的组合列表，我想通过一次查询获取到所有报警人信息，于是我先写了内部子查询:</p>
+<pre><code class="sql">SELECT t2.name,t2.tel,t2.wxid,t1.groupname
+FROM person_info t2
+RIGHT JOIN group_info t1 ON t2.name = t1.name
+WHERE groupname IN (&#39;qjj&#39;,&#39;jjq&#39;,&#39;person&#39;)
+UNION ALL
+SELECT IFNULL(name,0),tel,wxid,&#39;groupname&#39;
+FROM person_info
+WHERE name IN (&#39;qjj&#39;,&#39;jjq&#39;,&#39;person&#39;);
+
+# 结果:
++------+------+------+-----------+
+| name | tel  | wxid | groupname |
++------+------+------+-----------+
+| jjq  | 120  | JJQ  | person    |
+| qjj  | 110  | QJJ  | person    |
+| jjq  | 120  | JJQ  | groupname |
+| qjj  | 110  | QJJ  | groupname |
++------+------+------+-----------+
+4 rows in set (0.00 sec)</code></pre>
+<p>因为有重复的人名和重复的联系方式会重复报警，所以为了避免重复报警，我又加了外面的一层:</p>
+<pre><code class="sql">SELECT name,tel,wxid,max(groupname) FROM
+(SELECT t2.name,t2.tel,t2.wxid,t1.groupname
+FROM person_info t2
+RIGHT JOIN group_info t1 ON t2.name = t1.name
+WHERE groupname IN (&#39;qjj&#39;,&#39;jjq&#39;,&#39;person&#39;)
+UNION ALL
+SELECT IFNULL(name,0),tel,wxid,&#39;groupname&#39;
+FROM person_info
+WHERE name IN (&#39;qjj&#39;,&#39;jjq&#39;,&#39;person&#39;)) a
+GROUP BY name;
+
+# 结果:
++------+------+------+----------------+
+| name | tel  | wxid | max(groupname) |
++------+------+------+----------------+
+| jjq  | 120  | JJQ  | person         |
+| qjj  | 110  | QJJ  | person         |
++------+------+------+----------------+
+2 rows in set (0.01 sec)</code></pre>
+<p>准确地拿到了name,tel,wxid，但是groupname字段呢，到底是哪个被舍弃了？不同情况下不一定。如果我们只要name,tel,wxid这三个字段，在groupname字段上加个max()好了，这样逻辑也说得通，也比较规范，如果要求精确拿到groupname字段的值，就不能使用group by去重。  </p>
+<h2 id="关于效率"><a href="#关于效率" class="headerlink" title="关于效率"></a>关于效率</h2><p>DISTINCT和GROUP BY同时适用的场景下，<strong>不能说一定是谁的效率更高</strong><br>DISTINCT就是字段值对比的方式，要遍历整个表。GROUP BY类似于先建索引再查索引。<br><strong>小表DISTINCT去重效率高，大表GROUP BY去重效率高</strong></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>认清DISTINCT和GROUP BY的去重场景  </li>
+<li>某些场景下DISTINCT与GROUP BY去重同时适用，但DISTINCT效率更高  </li>
+<li>代码要规范且符合逻辑  </li>
+<li>要对SQL每个语法的使用场景有明确的认识  </li>
+<li>多总结问题  </li>
+</ul>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/2019/11/15/05%E6%95%B0%E6%8D%AE%E5%BA%93/MySQL/%E6%93%8D%E4%BD%9C/Mysql%20Event%20Scheduler/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  Mysql Event Scheduler
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/2019/11/03/08%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/Sqoop%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+                
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: 'zUyVEaHo59RUUwiPTChPEeBj-gzGzoHsz',
+			appKey: 'xIEyTcrkTuJLz6ewPbpTj8mz',
+			placeholder: '欢迎评论...',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2020-<span id="footerYear"></span> 
+	<a href="/">佳境Shmily</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Theme <a href="//github.com/wujun234/hexo-theme-tree" target="_blank">Tree</a>
+	by <a href="//github.com/wujun234" target="_blank">WuJun</a>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>
