@@ -664,6 +664,24 @@ pd_df[pd_df[&#39;score&#39;]&gt;=60][pd_df[&#39;id&#39;]&gt;=5]</code></pre>
 df.filter(&#39;score&gt;=60 and id&gt;=5&#39;) 或 df.where(&#39;score&gt;=60 and id&gt;=5&#39;)</code></pre>
 </li>
 </ul>
+<h2 id="数据去重"><a href="#数据去重" class="headerlink" title="数据去重"></a>数据去重</h2><ul>
+<li><p>Pandas</p>
+<pre><code class="python">pd_df.drop_duplicates(&#39;col&#39;)</code></pre>
+</li>
+<li><p>PySpark</p>
+<pre><code class="python">df.drop_duplicates()  # data中一行元素全部相同时才去除
+df.drop_duplicates([&#39;a&#39;,&#39;b&#39;])  # data根据’a&#39;,&#39;b&#39;组合列删除重复项，默认保留第一个出现的值组合。传入参数keep=&#39;last&#39;则保留最后一个</code></pre>
+</li>
+</ul>
+<h2 id="取唯一值"><a href="#取唯一值" class="headerlink" title="取唯一值"></a>取唯一值</h2><ul>
+<li><p>Pandas</p>
+<pre><code class="python">pd_df[&#39;col&#39;].unique()</code></pre>
+</li>
+<li><p>PySpark</p>
+<pre><code class="python">df.select(&#39;col&#39;).distinct().count()
+或df.drop_duplicates([&#39;col&#39;]).count()</code></pre>
+</li>
+</ul>
 <h2 id="分组聚合"><a href="#分组聚合" class="headerlink" title="分组聚合"></a>分组聚合</h2><ul>
 <li><p>Pandas</p>
 <pre><code class="python">pd_df.groupby(&#39;col&#39;).mean()</code></pre>
@@ -703,14 +721,14 @@ Spark下有join方法即df.join()
 <h2 id="数据应用"><a href="#数据应用" class="headerlink" title="数据应用"></a>数据应用</h2><p>对应pd.apply(f)方法 即给df的每一列应用函数f</p>
 <ul>
 <li><p>Pandas</p>
-<pre><code class="python">pd_df.apply(f) 将df的每一列应用函数f</code></pre>
+<pre><code class="python">pd_df.apply(f) # 将df的每一列应用函数f</code></pre>
 </li>
 <li><p>PySpark</p>
 <pre><code class="python">df.foreach(f) 或者 df.rdd.foreach(f) # 将df的每一列应用函数f
 df.foreachPartition(f) 或者 df.rdd.foreachPartition(f) # 将df的每一分区数据应用函数f</code></pre>
 </li>
 </ul>
-<h2 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h2><ul>
+<h2 id="空值处理"><a href="#空值处理" class="headerlink" title="空值处理"></a>空值处理</h2><ul>
 <li><p>Pandas</p>
 <pre><code class="python"># 对缺失数据自动添加NaNs
 pd_df.fillna(1)  # fillna函数 将NaN的地方替换为1.0
@@ -793,7 +811,7 @@ delta = (upperBound - lowerBound) / numPartitions
 分区2数据条件：partitionColumn &gt; lowerBound + delta &amp;&amp; partitionColumn &lt;= lowerBound + 2 * delta
 ...
 最后分区数据条件：partitionColumn &gt; lowerBound + n*delta</code></pre>
-<p>也就是说，需要合理设置numPartitions和upperBound和upperBound的值，避免某个分区数据量过大。</p>
+<p>也就是说，需要合理设置numPartitions和upperBound和upperBound的值，避免某个分区数据量过大。<br>尽量使用范围基本确定且分区字段值分布相对均匀的Int类型字段做分区字段。</p>
 </li>
 </ul>
 <h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>Python三方库：SparklingPandas<br><a href="http://sparklingpandas.com/" target="_blank" rel="noopener">SparklingPandas</a></p>
