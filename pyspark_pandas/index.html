@@ -522,7 +522,7 @@
 </div>
 
 <div id="article-content">
-	<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;Pandas一直是非常受欢迎的数据分析利器，它基于Numpy，专为解决数据分析任务。因其基于Python，只能单节点单核心运行，所以在大数据分析场景下，瓶颈很明显。PySpark是基于Spark JavaClient的上层接口，可以结合Python语言以及Spark分布式运行的特点，来解决Pandas在大数据下的瓶颈。本篇文章主要对比Pandas API与PySparkAPI，总结一些Pandas应用场景下使用PySpark提高效率的方案。</p>
+	<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>&emsp;&emsp;Pandas一直是非常受欢迎的数据分析利器，它基于Numpy，专为解决数据分析任务。因其基于Python，只能单节点单核心运行，所以在大数据分析场景下，瓶颈很明显。PySpark是基于Spark JavaClient的上层接口，可以结合Python语言以及Spark分布式运行的特点，来解决Pandas在大数据下的瓶颈。本篇文章主要对比Pandas API与PySparkAPI，总结一些Pandas应用场景下使用PySpark提高效率的方案。<br>&emsp;&emsp;本篇主要是对比Pandas和PySpark的API使用，但不能对它们众多API做一一对比介绍，所以对于PySpark的更多API使用请参考：<strong><a href="http://spark.apache.org/docs/2.4.4/api/python/pyspark.sql.html" target="_blank" rel="noopener">pyspark.sql官方使用文档</a></strong></p>
 <h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><table>
 <thead>
 <tr>
@@ -567,22 +567,26 @@
 <li>数据经过一系列操作、聚合后数据量减少，且<strong>迫不得已</strong>用Pandas的情况下再使用Pandas(<font size="3" color="red"><strong>用Pandas处理的数据尽量更少</strong></font>)</li>
 <li>如果可以，尽量全程使用PySpark进行分析操作</li>
 <li>需要对计算复杂且耗时的Sparkdataframe进行cache避免重算提高效率</li>
+<li>尽可能将一段处理逻辑写到一段SQL中，而非得到多个Dataframe然后进行join</li>
 </ol>
 <h2 id="数据创建"><a href="#数据创建" class="headerlink" title="数据创建"></a>数据创建</h2><p>文中所有Spark Dataframe对象简称<strong>df</strong>,Pandas的Dataframe对象简称<strong>pd_df</strong>。</p>
 <ul>
 <li><p>Pandas</p>
-<pre><code class="python">pd_df = pd.read_csv(&#39;/datas/root/csv_data/csv_file.csv&#39;)   # 1.读csv数据源
+<pre><code class="python">pd_df = pd.read_csv(&#39;/datas/root/csv_data/csv_file.csv&#39;)   # 1.读本地csv数据源
 pd_df = spark.sql(&quot;select col1,col2 from table&quot;).to_pandas # 2.读Hive数据源
 pd_df = spark.sql(&quot;select * from table&quot;).to_pandas # 3.读Hive整个表
 # 4.读MySQL表数据
 pd_df = pd.read_sql(&#39;select * from table&#39;, con=pymysql.connect(host=&quot;localhost&quot;,user=username,passwd=password,db=database_name,charset=&quot;utf8&quot;))
 # 5.从list，set，dict创建dataftame
-pd.DataFrame({&quot;id&quot;:[1,2,3,4],&quot;name&quot;:[&#39;qjj&#39;,&#39;zxw&#39;,&#39;zzz&#39;,&#39;abc&#39;]})
+pd_df = pd.DataFrame({&quot;id&quot;:[1,2,3,4,5],&quot;name&quot;:[&#39;qjj&#39;,&#39;zxw&#39;,&#39;zzz&#39;,&#39;abc&#39;,np.nan]})
 # 6.读json
-pd_df = pd.read_json(&#39;/datas/root/csv_data/json_file&#39;)</code></pre>
+pd_df = pd.read_json(&#39;/datas/root/csv_data/json_file&#39;)
+# zeros创建指定shape的带0的ndarray
+pd_df = np.zeros((5,3), dtype=&#39;int64&#39;)  #5 行 3 列</code></pre>
 </li>
 <li><p>PySpark</p>
-<pre><code class="python">df = spark.read.option(&#39;inferSchema&#39;,&quot;true&quot;).option(&quot;header&quot;, &quot;true&quot;).csv(&#39;/data/data_test/csv_file.csv&#39;)   # 1.读csv数据源
+<pre><code class="python">df = spark.read.option(&#39;inferSchema&#39;,&quot;true&quot;).option(&quot;header&quot;, &quot;true&quot;).csv(&#39;/data/data_test/csv_file.csv&#39;)   # 1.读HDFS上csv数据源
+df = spark.read.csv(&quot;file:///a.csv&quot;) # 读本地csv 路径/a.csv 
 df = spark.sql(&quot;select col1,col2 from table&quot;) # 2.读Hive数据源
 df = spark.table(&#39;table&#39;) # 3.读Hive整个表
 # 4.读MySQL表数据 
@@ -595,30 +599,36 @@ conf = {
 }
 df = spark.read.format(&quot;jdbc&quot;).options(**conf).load()
 # 5.从list，set，dict创建dataftame
-df = spark.createDataFrame(pd.DataFrame({&quot;id&quot;:[1,2,3,4],&quot;name&quot;:[&#39;qjj&#39;,&#39;zxw&#39;,&#39;zzz&#39;,&#39;abc&#39;]}))  或
+df = spark.createDataFrame(pd.DataFrame({&quot;id&quot;:[1,2,3,4,5],&quot;name&quot;:[&#39;qjj&#39;,&#39;zxw&#39;,&#39;zzz&#39;,&#39;abc&#39;,None]}))  或
 df = spark.createDataFrame([(1,&#39;qjj&#39;),(2,&#39;zxw&#39;),(3,&#39;zzz&#39;),(4,&#39;abc&#39;)], [&#39;id&#39;, &#39;name&#39;])
 # 6.读json文件
 df = spark.read.json(&#39;/datas/root/csv_data/json_file&#39;)
-</code></pre>
+# 7.从Parquet创建数据
+df = spark.read.parquet(&quot;...&quot;)
+df = spark.read.format(&#39;parquet&#39;).load(&#39;parquet_file&#39;),opt...)
+# 8.从ORC创建数据
+df = spark.read.orc(&#39;...&#39;)
+# 9.从text创建数据
+df = spark.read.text(&#39;...&#39;)
+# 10.创建指定shape的带0的dataframe
+df = spark.createDataFrame([[0 for i in range(3)] for i in range(5)])  #5 行 3 列
+# 创建数据并指定字段名(Schema)
+from pyspark.sql.types import *
+schema = StructType().add(&#39;col1&#39;, StringType(), True).add(&#39;col2&#39;, IntegerType())  # True是否可以为空
+df = spark.createDataFrame([(&#39;aaa&#39;, 1),(&#39;bbb&#39;, 2)], schema=schema)</code></pre>
 </li>
 </ul>
-<h1 id="7-从Parquet创建数据"><a href="#7-从Parquet创建数据" class="headerlink" title="7.从Parquet创建数据"></a>7.从Parquet创建数据</h1><p>df = spark.read.parquet(“…”)<br>df = spark.read.format(‘parquet’).load(‘parquet_file’),opt…)</p>
-<h1 id="8-从ORC创建数据"><a href="#8-从ORC创建数据" class="headerlink" title="8.从ORC创建数据"></a>8.从ORC创建数据</h1><p>df = spark.read.orc(‘…’)</p>
-<h1 id="9-从text创建数据"><a href="#9-从text创建数据" class="headerlink" title="9.从text创建数据"></a>9.从text创建数据</h1><p>df = spark.read.text(‘…’)</p>
-<pre><code>
-## 数据结构  
-* Pandas
-index索引：自动创建
-行结构：Series结构，属于Pandas DataFrame
-列结构：Series结构，属于Pandas DataFrame
-```python
-pd_df[&#39;col&#39;] = 0  # 列添加
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><ul>
+<li><p>Pandas<br>index索引：自动创建<br>行结构：Series结构，属于Pandas DataFrame<br>列结构：Column结构，属于Pandas DataFrame</p>
+<pre><code class="python">pd_df[&#39;col&#39;] = 0  # 列添加
 pd_df[&#39;col&#39;] = 1  # 列修改
 pd_df.rename(columns={&#39;col&#39;:&#39;new_col&#39;,&#39;xx&#39;:&#39;xxx&#39;})  # 重命名列名
 pd_df.columns=[&#39;col1&#39;,&#39;col2&#39;,&#39;col3&#39;]  # 重命名列名
 pd_df.dtypes  # 查看字段和类型
-pd_df.drop(columns=[&#39;col&#39;, &#39;name&#39;])  # 删除字段col</code></pre><ul>
-<li>PySpark<br>index索引：无<br>行结构：Row对象，属于Spark DataFrame<br>列结构：Column对象，属于Spark DataFrame<pre><code class="python">from pyspark.sql.functions import lit
+pd_df.drop(columns=[&#39;col&#39;, &#39;name&#39;])  # 删除字段col</code></pre>
+</li>
+<li><p>PySpark<br>index索引：无<br>行结构：Row对象，属于Spark DataFrame<br>列结构：Column对象，属于Spark DataFrame</p>
+<pre><code class="python">from pyspark.sql.functions import lit
 df = df.withColumn(&quot;col&quot;, lit(0))  # 列添加
 df = df.withColumn(&quot;col&quot;, lit(1))  # 列修改
 df = df.withColumnRenamed(&#39;col&#39;, &#39;new_col&#39;).withColumnRenamed(&#39;col1&#39;, &#39;new_col1&#39;)  # 重命名列名
@@ -739,6 +749,14 @@ df.groupBy(&#39;col&#39;).agg(functions.avg(&#39;score&#39;), functions.min(&#39
 spark.sql(&quot;select name,first(col) as col,sum(score) from table group by name&quot;).show()</code></pre>
 </li>
 </ul>
+<h2 id="数据计算"><a href="#数据计算" class="headerlink" title="数据计算"></a>数据计算</h2><ul>
+<li>Pandas<pre><code class="python">pd_df[&#39;col&#39;].apply(lambda x: round(math.log(7,2),2))  # 计算2为底7的log，精确小数点后2位
+pd_df[&#39;col&#39;].apply(lambda x: sum(x))   # 求和</code></pre>
+</li>
+<li>PySpark<pre><code class="python">spark.sql(&quot;select round(log(2,7),2) as r&quot;).show()  # 计算2为底7的log，精确小数点后2位
+spark.sql(&quot;select sum(col) from df&quot;).show()  # 求和</code></pre>
+</li>
+</ul>
 <h2 id="数据统计"><a href="#数据统计" class="headerlink" title="数据统计"></a>数据统计</h2><ul>
 <li><p>Pandas</p>
 <pre><code class="python">pd_df.count()  # 输出每一列的非空行数
@@ -779,15 +797,18 @@ for i in l:
   df = df.withColumn(&#39;col_&#39; + i, my_udf(&#39;array_type_col&#39;))</code></pre>
 </li>
 </ul>
-<h2 id="数据应用"><a href="#数据应用" class="headerlink" title="数据应用"></a>数据应用</h2><p>对应pd.apply(f)方法 即给df的每一列应用函数f</p>
+<h2 id="数据修改"><a href="#数据修改" class="headerlink" title="数据修改"></a>数据修改</h2><p>对应pd.apply(f)方法 即给df的每一列应用函数f</p>
 <ul>
 <li><p>Pandas</p>
 <pre><code class="python">pd_df.apply(f) # 可作用于Series或整个Dataframe，并对每个元素应用函数f
-pd_df.apply(f, axis=1)  # axis=0 表示按列，axis=1 表示按行</code></pre>
+pd_df.apply(f, axis=1)  # axis=0 表示按列，axis=1 表示按行
+pd_df.replace({1:10, 2:20})  # 将dataframe中值为1的都替换成10,2替换成20 pandas支持替换为不同类型</code></pre>
 </li>
 <li><p>PySpark</p>
 <pre><code class="python">df.foreach(f) 或者 df.rdd.foreach(f) # 将df的每一列应用函数f
-df.foreachPartition(f) 或者 df.rdd.foreachPartition(f) # 将df的每一分区数据应用函数f</code></pre>
+df.foreachPartition(f) 或者 df.rdd.foreachPartition(f) # 将df的每一分区数据应用函数f
+pd_df.replace({1:10, 2:20})  # 将dataframe中值为1的都替换成10,2替换成20 spark不支持替换为不同类型</code></pre>
+<p>注意：Spark的apply方法会触发全量数据Shuffle，如果数据量过大会有shuffle异常和ExecutorOOM等错误，任务失败概率会增加，而且需要消耗更多计算资源</p>
 </li>
 </ul>
 <h2 id="空值处理"><a href="#空值处理" class="headerlink" title="空值处理"></a>空值处理</h2><ul>
@@ -796,7 +817,8 @@ df.foreachPartition(f) 或者 df.rdd.foreachPartition(f) # 将df的每一分区�
 pd_df.fillna(1)  # fillna函数 将NaN的地方替换为1.0
 pd_df.dropna()  # dropna函数 将含有NaN的行删除
 pd_df[&#39;col&#39;]=np.where(pd.isnull(pd_df[&#39;col&#39;], &quot;unknown&quot;, pd_df[&#39;col&#39;]))  # 某个字段出现空时替换为unknown
-pd_df[&#39;col&#39;]=np.where(pd_df[&#39;col&#39;]==&#39;&#39;, &quot;unknown&quot;, pd_df[&#39;col&#39;])  # 某个字段出现空字符串时替换为unknown</code></pre>
+pd_df[&#39;col&#39;]=np.where(pd_df[&#39;col&#39;]==&#39;&#39;, &quot;unknown&quot;, pd_df[&#39;col&#39;])  # 某个字段出现空字符串时替换为unknown
+pd_df.isna()  # 非空值变为False，有空值变为True</code></pre>
 </li>
 <li><p>PySpark</p>
 <pre><code class="python">不自动添加NaNs，且不抛出错误
@@ -804,7 +826,9 @@ df.na.fill(1).show()  # fillna函数 将null的地方替换为1.0
 df.na.drop().show()  # dropna函数 将含有null值字段的行删除
 df.dropna(subset=[&#39;col1&#39;, &#39;col2&#39;])  # 扔掉col1或col2中任一一列包含null的行
 df=df.na.fill(subset=&#39;col&#39;, value=&#39;unknown&#39;) # 某个字段出现空时替换为unknown
-select if(col=&#39;&#39;,&#39;unknown&#39;,col) as col # 某个字段出现空字符串时替换为unknown</code></pre>
+select if(col=&#39;&#39;,&#39;unknown&#39;,col) as col # 某个字段出现空字符串时替换为unknown
+df.fillna(&#39;True&#39;)  # 有空值变为True
+还可使用case when或if处理空值</code></pre>
 </li>
 </ul>
 <h2 id="SQL支持"><a href="#SQL支持" class="headerlink" title="SQL支持"></a>SQL支持</h2><ul>
@@ -864,10 +888,19 @@ pivot_table = df.selectExpr(&#39;*&#39;, &#39;explode(list_type_col)&#39;, &#39;
 <pre><code class="python">没有diff操作（Spark的上下行是相互独立，分布式存储的）</code></pre>
 </li>
 </ul>
-<h2 id="数据保存"><a href="#数据保存" class="headerlink" title="数据保存"></a>数据保存</h2><pre><code class="python">...</code></pre>
+<h2 id="数据保存"><a href="#数据保存" class="headerlink" title="数据保存"></a>数据保存</h2><pre><code class="python">pd_df.to_csv(&quot;/data/path_to_file&quot;)   # 写本地csv文件</code></pre>
 <ul>
-<li>PySpark<pre><code class="python">...</code></pre>
-</li>
+<li>PySpark<pre><code class="python">df.write.csv(&quot;file:///data/path&quot;)    # 数据写本地csv，可能写多个文件
+df.coalesce(1).write.csv(&quot;file:///data/path&quot;)   # 数据写本地，写1个csv文件
+df.coalesce(1).mode(&quot;overwrite&quot;).option(header=True).csv(&#39;/data/hdfs_path&#39;,sep=&#39;\t&#39;)  # 写一个csv文件到hdfs，带header，默认覆盖，分隔符为\t
+df.write.insertInto(&#39;exist_hive_table&#39;)  # 追加写数据到已存在的hive表  字段与df中字段名称顺序类型要对应
+df.write.insertInto(&#39;exist_hive_table&#39;, overwrite=True)  # 覆盖写数据到已存在的hive表  字段与df中字段名称顺序类型要对应
+df.write.jdbc(url=&quot;jdbc:mysql://xxx.xxx.xxx.xxx:3306/db_name&quot;, table=&quot;table_name&quot;, mode=&quot;overwrite&quot;, properties={&quot;user&quot;: &quot;root&quot;, &quot;password&quot;: &quot;123456&quot;})  # 将数据overwrite到mysql  注意数据量不能太大且并行度不能太高，可能会把mysql搞垮，建议并行度不超过10==&gt;coalesce(10)  
+df.write.saveAsTable(&quot;hive_table&quot;, mode=&quot;append&quot;)  # 直接写数据到hive表 无论表是否已经存在都可以 还有options，partitionBy，format等参数影响表结构
+df.write.format(&#39;parquet&#39;).bucketBy(100,&#39;year&#39;,&#39;month&#39;).sortBy(&#39;day&#39;).mode(&#39;overwrite&#39;).saveAsTable(&#39;sorted_bucketed_table&#39;)  # 数据排序分区存储成parquet
+df.coalesce(1).write.save(path,format,mode,partitionBy,**Options)  # 存储数据
+df.coalesce(1).write.json(&quot;file:///data/path&quot;,mode=&#39;overwrite&#39;,)  # 写数据到单个json文件</code></pre>
+注：文件写到hdfs也不要紧，可以通过挂载NFS或者FUSE等方式将hdfs目录挂载到本地，同样方便后续处理</li>
 </ul>
 <h2 id="高级用法（优化）"><a href="#高级用法（优化）" class="headerlink" title="高级用法（优化）"></a>高级用法（优化）</h2><ul>
 <li><p>PySpark连续编写转换函数</p>
