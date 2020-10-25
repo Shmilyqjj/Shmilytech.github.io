@@ -515,18 +515,17 @@
 		<div id="index">
 	
 		<div class="index-li">
-			<a href="/1f7eb1b3/">
+			<a href="/f5da73a2/">
 				<h2 class="index-title">
-					数据库事务ACID理解
+					大数据脱敏方案调研
 				</h2>
 				<div class="index-brief">
-					Intro对于事务ACID，知道大概的意思，但总觉得对这个概念还有点模糊，所以写一篇博客加深一下印象。  
-数据库的事务一个事务中可能有多个操作，当所有操作都成功了的情况下这个事务才会被提交，如果其中一个操作失败，整个事务都将回滚(Rollback)到事务开始前的状态，好像这个事务从未执行过。简单来
+					大数据脱敏方案调研背景&emsp;&emsp;大数据发展速度飞快，大数据的价值也有目共睹，在大数据技术领域，对于分析性能，实时性等方面都有了很大的突破，但数据安全问题在数据业务建立初期很难被重视，而数据规模壮大后才开始重视，以致大多数企业大数据平台安全管控能力普遍缺失。。现今数据安全问题频发，而且一
 					...
 				</div>
 			</a>
                 <div class="article-meta">
-				    <span>2019-12-28</span>
+				    <span>2020-10-20</span>
                     
                             
                                 
@@ -536,243 +535,6 @@
 										
                                     </span>
                                 
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/7fbbfd34/">
-				<h2 class="index-title">
-					Hive3.x新特性
-				</h2>
-				<div class="index-brief">
-					Hive3.x新特性新特性简述  
-
-执行引擎变更为TEZ,不使用MR  
-成熟的ACID大数据事务支持  
-LLAP用于妙极，毫秒级查询访问  
-基于Apache Ranger的统一权限管理  
-默认开启HDFS ACLs
-Beeline代替Hive Cli，降低启动开销  
-不再支持内嵌Meta
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>2019-12-27</span>
-                    
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/技术/">技术</a>
-										
-                                    </span>
-                                
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/3c26421b/">
-				<h2 class="index-title">
-					Mysql Event Scheduler
-				</h2>
-				<div class="index-brief">
-					Mysql事件调度器工作的时候遇到一张表需要每天Truncate，就想到了Mysql的Event Scheduler，但是又忘了它的语法了，所以这里来复习一下。  
-什么是Event Scheduler事件调度器，可以作为定时调度器，类似于Crontab，可以取代部分操作系统任务调度器的定时任务工作
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>2019-11-15</span>
-                    
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/技术/">技术</a>
-										
-                                    </span>
-                                
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/96009187/">
-				<h2 class="index-title">
-					浅谈group by与distinct去重
-				</h2>
-				<div class="index-brief">
-					前言今天带我的老哥让我改一下报警模块，把一些联系方式等信息存在Mysql里，方便以后管理和维护，很简单的东西，为了减少Mysql并发压力，我想每次报警只查询一次数据库，但子查询返回的结果有重复记录，于是我写了个类似SELECT col1,col2,col3,col4 FROM (select…) G
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>2019-11-13</span>
-                    
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/技术/">技术</a>
-										
-                                    </span>
-                                
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/26078/">
-				<h2 class="index-title">
-					Sqoop学习笔记
-				</h2>
-				<div class="index-brief">
-					什么是SqoopSqoop是一款开源工具，用于Hadoop(Hive)与mysql等传统数据库间进行数据传递，可以将关系型数据库mysql,Oracle等中的数据导入HDFS中，也可以把HDFS中的数据导入到关系型数据库中。Sqoop2与Sqoop1完全不兼容，一般生产环境使用Sqoop1，这里主要
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>2019-11-03</span>
-                    
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/技术/">技术</a>
-										
-                                    </span>
-                                
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/38328/">
-				<h2 class="index-title">
-					CentOS7安装CDH6全程记录
-				</h2>
-				<div class="index-brief">
-					前言一开始搭集群时，都是装Apache原生的Hadoop，Spark包，一个一个装，一个一个配，好麻烦，而且通过命令或REST监控还很不直观，直到我遇到了Cloudera Manager，这东西简直就是神器。Cloudera Manager（简称CM），是Cloudera开发的一款大数据集群部署神器
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>2019-10-29</span>
-                    
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/技术/">技术</a>
-										
-                                    </span>
-                                
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/39595/">
-				<h2 class="index-title">
-					记一次参加QCon全球软件开发大会
-				</h2>
-				<div class="index-brief">
-					QCon全球软件开发大会全球软件开发大会是为团队领导者、架构师、项目经理和高级软件开发人员量身打造的企业软件开发大会，其所覆盖的主题内容与InfoQ网站相同，关注架构与设计、真实案例分析等等。秉承”促进软件开发领域知识与创新的传播”原则，QCon各项议题专为中高端技术人员设计，内容源于实践并面向社区
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>2019-10-21</span>
-                    
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/技术/">技术</a>
-										
-                                    </span>
-                                
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/undefined/">
-				<h2 class="index-title">
-					hello-world
-				</h2>
-				<div class="index-brief">
-					
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>1970-01-01</span>
-                    
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/undefined/">
-				<h2 class="index-title">
-					hello-world
-				</h2>
-				<div class="index-brief">
-					
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>1970-01-01</span>
-                    
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/undefined/">
-				<h2 class="index-title">
-					hello-world
-				</h2>
-				<div class="index-brief">
-					
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>1970-01-01</span>
-                    
-                            
-                    
-                </div>
-		</div>	
-	
-		<div class="index-li">
-			<a href="/undefined/">
-				<h2 class="index-title">
-					hello-world
-				</h2>
-				<div class="index-brief">
-					
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>1970-01-01</span>
-                    
                             
                     
                 </div>
@@ -780,8 +542,6 @@ Beeline代替Hive Cli，降低启动开销
 	
 	
 	<div id="index-paginator">
-		
-			<a class="extend prev" rel="prev" href="/archives/">&lt;</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
 		
 	</div>
 </div>
