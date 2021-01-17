@@ -9,16 +9,16 @@
 	
 	<title>
 	
-		分享我的技术调研流程 | 
+		Impala-基于内存的高效SQL交互查询引擎 | 
 	 
 	佳境的技术专区
 	</title>
 	
 	<!-- keywords,description -->
 	
-		<meta name="keywords" content="分享技术调研流程," />
+		<meta name="keywords" content="Impala," />
 	 
-		<meta name="description" content="如何流程化做好一份技术调研任务？" />
+		<meta name="description" content="了解高效SQL分析引擎Impala" />
 	
 
 	<!-- favicon -->
@@ -351,7 +351,7 @@
 									</a>
 									
 							<ul>
-								<li class="file active">
+								<li class="file">
 									<a href="/4b21953d/">
 										分享我的技术调研流程
 									</a>
@@ -487,7 +487,7 @@
 							</ul>
 			
 							<ul>
-								<li class="file">
+								<li class="file active">
 									<a href="/1ae37d82/">
 										Impala-基于内存的高效SQL交互查询引擎
 									</a>
@@ -529,12 +529,12 @@
 	<div id="content">
 		<h1 id="article-title">
 
-	分享我的技术调研流程
+	Impala-基于内存的高效SQL交互查询引擎
 </h1>
 <div class="article-meta">
 	
 	<span>佳境Shmily</span>
-	<span>2020-01-03 21:10:00</span>
+	<span>2021-01-17 10:18:30</span>
     
 		<div id="article-categories">
             
@@ -551,102 +551,140 @@
 </div>
 
 <div id="article-content">
-	<h1 id="技术调研流程分享"><a href="#技术调研流程分享" class="headerlink" title="技术调研流程分享"></a>技术调研流程分享</h1><p><strong>为何制定流程？</strong><br><font size="3" color="red">明确调研需求，提高调研文档质量，规范调研流程，保证调研产出。</font></p>
-<p><strong>我是如何制定调研流程的？</strong><br><font size="3" color="red">先总结一版自己的调研流程，再查阅资料以及查看阿里等大厂的调研报告，结合部门目前的实际情况来明确部门的调研流程。</font></p>
-<h2 id="技术调研流程"><a href="#技术调研流程" class="headerlink" title="技术调研流程"></a>技术调研流程</h2><p><strong>整个调研流程分四个阶段</strong></p>
-<h3 id="第一阶段：需求分析"><a href="#第一阶段：需求分析" class="headerlink" title="第一阶段：需求分析"></a>第一阶段：需求分析</h3><ol>
-<li>分析目前/未来可能出现的瓶颈点</li>
-<li>明确调研目标和方向（为了实现新需求？为了优化瓶颈点？）</li>
-<li>引入新工具后的结果衡量（效率提升、成本降低等，如何衡量）</li>
-<li>结构化思考新工具引入的目标和衡量标准：场景（适用场景、知识要求）、效率（性能、效果预测）、成本（容量、硬件资源、维护成本）、稳定性（故障分析工具、监控完善度）等</li>
-</ol>
-<h3 id="第二阶段：准备阶段"><a href="#第二阶段：准备阶段" class="headerlink" title="第二阶段：准备阶段"></a>第二阶段：准备阶段</h3><ol>
-<li>理解需求</li>
-<li>结合现状评估可行性和收益</li>
-</ol>
-<h3 id="第三阶段：调研阶段"><a href="#第三阶段：调研阶段" class="headerlink" title="第三阶段：调研阶段"></a>第三阶段：调研阶段</h3><ol>
-<li>简单调研<ul>
-<li>短时间内粗略了解所调研技术的应用场景和部署环境，进一步评估和权衡可行性和收益</li>
-<li>经过权衡后发现值得调研，发送邮件至直接上级并抄送部门Leader (标题：申请调研xxx 内容：简述xxx值得详细调研的理由)</li>
-<li>协商决定是否批准，若批准，则开始进入详细调研阶段</li>
-</ul>
-</li>
-<li>详细调研<br> 包括但不限于：<ul>
-<li>先设计调研方法与调研过程</li>
-<li>预估调研时间，并在<a href="https://www.italent.cn/" target="_blank" rel="noopener">北森</a>设定Deadline，根据调研报告的要求按时完成调研报告</li>
-<li>了解相关技术在其他公司的应用及收益</li>
-<li>原理及核心技术调研</li>
-<li>总结适合我们的场景及解决方案</li>
-<li>调研过程遇到的问题与解决方案</li>
-<li>未解决的问题/收集需求可随时讨论，有必要的话可以开讨论会</li>
-<li>设计落地方案</li>
-</ul>
-</li>
-</ol>
-<h3 id="第四阶段：反馈与落地"><a href="#第四阶段：反馈与落地" class="headerlink" title="第四阶段：反馈与落地"></a>第四阶段：反馈与落地</h3><ol>
-<li>调研反馈<ul>
-<li>必须产出一份调研报告</li>
-<li>选择反馈形式：分享会、文档、邮件、群通知（如果是分享会，则要有完善的PPT，会前共享出来）</li>
-</ul>
-</li>
-<li>技术落地<ul>
-<li>根据自己设计的落地方案得出详细的部署文档和使用文档</li>
-<li>配合运维部署</li>
-</ul>
-</li>
-</ol>
-<h3 id="后续阶段：落地后如何跟进"><a href="#后续阶段：落地后如何跟进" class="headerlink" title="后续阶段：落地后如何跟进"></a>后续阶段：落地后如何跟进</h3><ol>
-<li>出现问题及时跟进解决，并把问题与解决方案更新到使用文档中，如果影响较大，要在更新完使用文档后发群通知。</li>
-<li>相关的新人文档/Wiki更新</li>
-</ol>
-<h3 id="文档要求"><a href="#文档要求" class="headerlink" title="文档要求"></a>文档要求</h3><p><strong>所有调研文档统一保存在gitlab部门文档中的技术调研文档目录</strong></p>
+	<h1 id="Impala-基于内存的高效SQL交互查询引擎"><a href="#Impala-基于内存的高效SQL交互查询引擎" class="headerlink" title="Impala-基于内存的高效SQL交互查询引擎"></a>Impala-基于内存的高效SQL交互查询引擎</h1><h2 id="Impala简介"><a href="#Impala简介" class="headerlink" title="Impala简介"></a>Impala简介</h2><p>&emsp;&emsp;Impala是Cloudera提供的一款高效率的SQL实时查询工具，官方测试性能比Hive快10到100倍，SQL查询性能甚至比SparkSQL还更加高效。Impala是基于Hive的大数据分析查询引擎，直接使用Hive的元数据库，意味着Impala元数据都存储在Hive的元数据库当中。Impala兼容绝大多数HiveQL语法。</p>
+<pre><code class="text">Impala基于MPP（Massively Parallel Processing）[大规模并行处理]理念的查询引擎，什么是MPP？
+MPP是一种海量数据实时分析架构,MPP理念是将任务并行的分散到多个服务器和节点上，在每个节点上计算完成后，将各自部分的结果汇总在一起得到最终的结果
+特点：
+● Shared Nothing架构（每一个节点都是独立的，自给的，在系统中不存在单点竞争，没有共享数据），私有资源
+● 任务分布式并行执行（数据无共享，无IO冲突，无锁资源竞争，计算速度快）
+● 数据分布式存储(本地化)
+● 横向扩展（易扩容）;
+● 单个节点查询效率慢会影响整个查询（倾斜）
+附：
+Shared Everthing：完全透明共享 CPU/Memory/IO，并行处理能力是最差的
+Shared Storage：各个处理单元使用自己的私有CPU//Memory，但共享磁盘系统
+Shared Nothing：各个处理单元都有自己私有的CPU/Memory/IO</code></pre>
+<p><strong>基于SQL的计算引擎对比</strong></p>
+<table>
+<thead>
+<tr>
+<th align="center">引擎</th>
+<th align="center">开发语言</th>
+<th align="center">执行机制</th>
+<th align="center">资源调度</th>
+<th align="center">内存分配</th>
+<th align="center">容错</th>
+<th align="center">场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">Hive(MR)</td>
+<td align="center">Java</td>
+<td align="center">SQL-&gt;MR-&gt;Yarn-&gt;HDFS</td>
+<td align="center">Yarn调度</td>
+<td align="center">内存不够则用磁盘</td>
+<td align="center">Hadoop容错机制包括重试和推测执行</td>
+<td align="center">离线分析和跑批任务</td>
+</tr>
+<tr>
+<td align="center">Spark</td>
+<td align="center">Scala</td>
+<td align="center">SQL-&gt;计划-&gt;Yarn-&gt;HDFS</td>
+<td align="center">支持多种调度</td>
+<td align="center">优先使用内存不够则用磁盘，可手动</td>
+<td align="center">Lineage+Checkpoint+失败重试</td>
+<td align="center">兼容多种场景</td>
+</tr>
+<tr>
+<td align="center">Presto</td>
+<td align="center">Java</td>
+<td align="center">SQL-&gt;计划-&gt;Workers-&gt;HDFS</td>
+<td align="center">自身</td>
+<td align="center">纯内存计算</td>
+<td align="center">无容错设计</td>
+<td align="center">交互式分析查询</td>
+</tr>
+<tr>
+<td align="center">ClickHouse</td>
+<td align="center">C++</td>
+<td align="center">SQL-&gt;计划-&gt;读存储引擎数据向量化执行</td>
+<td align="center">自身</td>
+<td align="center">内存+连续IO</td>
+<td align="center">多主机跨数据中心异步复制，不怕节点宕机</td>
+<td align="center">存储数据库+OLAP分析的场景</td>
+</tr>
+<tr>
+<td align="center">Impala</td>
+<td align="center">C++</td>
+<td align="center">SQL-&gt;计划-&gt;HDFS</td>
+<td align="center">自身</td>
+<td align="center">纯内存计算</td>
+<td align="center">无容错设计</td>
+<td align="center">交互式分析查询</td>
+</tr>
+</tbody></table>
+<h2 id="Impala优缺点"><a href="#Impala优缺点" class="headerlink" title="Impala优缺点"></a>Impala优缺点</h2><p>优点：</p>
 <ol>
-<li>部署文档要求<br> 这部分为了方便让运维人员傻瓜式部署，并可以把简单的运维工作交给运维。<ul>
-<li>尽量打包好主从节点的分发包（提前编译好） 例：<br>  xxx-master.zip  xxx-worker.zip  或整理conf配置文件包 xxx-master-conf.zip  xxx-worker-conf.zip</li>
-<li>尽量采用傻瓜式命令 例:<pre><code>sudo -uhdfs tar -zxvf /opt/alluxio-2.1.0-bin.tar.gz -C /opt/
-sudo -uhdfs sh /opt/alluxio-2.1.0/bin/alluxio-start.sh master
-sudo -uhdfs sh /opt/alluxio-2.1.0/bin/alluxio-start.sh worker
-chmod 777 /opt/alluxio-2.1.0/logs/user
-...</code></pre></li>
-<li>尽量写出部署过程可能的报错及解决方案</li>
-<li>常用维护方案总结</li>
-</ul>
-</li>
-<li>使用文档要求<br> 这部分目的是方便大家使用新技术新组件。<ul>
-<li>格式<strong>包括</strong>但<strong>不限于</strong>：<pre><code>场景1：示例代码/操作
-场景2：示例代码/操作
-场景3：示例代码/操作
-...</code></pre></li>
-<li>常见错误及解决</li>
-<li>遇到问题请联系：调研人</li>
-</ul>
-</li>
-<li>调研报告要求<br> 这部分的目的是调研时可能有遗漏的点，可以从这个列表里做参考。<br> 开头写清 <strong>标题 + 调研人 + 调研时间</strong><br> 可以<strong>参考</strong>但<strong>不限于</strong>这些点：<ul>
-<li>xx是什么</li>
-<li>xx的优缺点</li>
-<li>xx的应用场景</li>
-<li>xx的功能/特性</li>
-<li>xx的原理与架构简述</li>
-<li>相似技术横向对比</li>
-<li>初步评估带来的收益</li>
-<li>遇到的问题Q&amp;A</li>
-<li>xx的兼容性（支持什么不支持什么）</li>
-<li>xx技术的核心点</li>
-<li>xx的性能与扩展性（测试结果）</li>
-<li>xx的部署难度</li>
-<li>如何部署与简单实践</li>
-<li>应用该技术带来的工作量和学习成本</li>
-<li>总结</li>
-</ul>
-</li>
+<li>基于内存计算，低延迟，高吞吐，查询速度快，适用于秒级响应的OLAP交互式分析查询</li>
+<li>提供窗口函数（聚合 OVER PARTITION, RANK, LEAD, LAG, NTILE等等）以支持高级分析功能</li>
+<li>支持PB级数据量的实时分析</li>
+<li>支持map、struct、array类型上的复杂嵌套查询，支持UDF和UDAF</li>
+<li>可以使用Impala插入或更新HBase（类似Phoenix）</li>
+<li>支持Parquet、Avro、Text、RCFile、SequenceFile、HFile等多种文件格式，支持Snappy（有效平衡压缩率和解压缩速度）、Gzip（最高压缩率的归档数据压缩）、Deflate（不支持文本文件）、Bzip2、LZO（只支持文本文件）等多种压缩编码格式</li>
+<li>支持存储在HDFS、HBase、S3、Kudu上的数据操作</li>
+<li>与CDH深度整合，支持查看查询任务的各项指标</li>
+<li>支持Sentry和Kerberos</li>
 </ol>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ol>
-<li>关注缺点的优先级高于关注优点的优先级（优点再多，也可能因为一个缺点而不能被应用）</li>
-<li>明确场景，及时沟通需求，明确需求细节</li>
-<li>多搜集信息，不急于出结果（搜集足够的信息才能做出比较准确的判断）</li>
-<li>要从可行性，稳定性，可维护性，工作量和学习成本等几个重要方面考虑</li>
-<li>合理安排时间，自己规定了Deadline，就要及时交付反馈</li>
+<p>局限性：</p>
+<ol>
+<li>不适用于跑批</li>
+<li>查询时占用大量内存</li>
+<li>不支持ORC</li>
+<li>“AnalysisException: Impala does not support modifying a non-Kudu table” 不支持非Kudu表的Update、delete操作</li>
+<li>不支持Date数据类型</li>
 </ol>
+<h2 id="Impala原理"><a href="#Impala原理" class="headerlink" title="Impala原理"></a>Impala原理</h2><p><strong>Impala架构图</strong><br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Impala/Impala-01.png" alt="alt Impala-01">  </p>
+<h3 id="Impala-Daemon"><a href="#Impala-Daemon" class="headerlink" title="Impala Daemon"></a>Impala Daemon</h3><p>&emsp;&emsp;Impala的核心进程Impalad，部署在所有的数据节点上，接收客户端的查询请求，读写数据，并行执行来自集群中其他节点的查询请求，将中间结果返回给调度节点。调用节点将结果返回给客户端。Impalad进程通过持续与StateStore通信来确认自己所在的节点是否健康以及是否可以接受新的任务请求。</p>
+<p>Impalad包含三种角色：</p>
+<ul>
+<li><font size="3" color="red">Query Coordinator</font>：用户在Impala集群上的某个节点提交数据处理请求（例如impala-shell提交SQL），则该Impalad节点称为Coordinator Node（协调节点）,负责定位数据位置，拆分请求（Fragment），将任务分解为多个可并行执行的小请求，发送这些请求到多个Query Executor，接收Query Executor处理后返回的数据并构建最终结果返回给用户。</li>
+<li><font size="3" color="red">Query Planner</font>：Java编写的，解析SQL生成QueryPlanTree执行计划树。</li>
+<li><font size="3" color="red">Query Executor</font>：执行数据计算，比如scan，Aggregation，Merge等，返回数据。</li>
+</ul>
+<h3 id="Impala-StateStore"><a href="#Impala-StateStore" class="headerlink" title="Impala StateStore"></a>Impala StateStore</h3><p>&emsp;&emsp;Statestored进程，状态管理进程（类似ZK），定时检查Impala Daemon的健康状况，协调各个运行Impalad进程之间的信息，Impala通过这些信息去定位查询请求所要的数据，如果Impala节点下线，StateStore会通知其他节点，避免查询任务分发到不可用的节点上。</p>
+<h3 id="Impala-Catalog-Service"><a href="#Impala-Catalog-Service" class="headerlink" title="Impala Catalog Service"></a>Impala Catalog Service</h3><p>&emsp;&emsp;Catalogd进程，元数据管理服务，将数据表变化的信息分发给各个进程。接收来自StateStore的所有请求，每个Impala节点在本地缓存所有元数据。<strong>当表创建、数据更新或Schema发生变化时，其他Impala后台进程必须更新元数据缓存，才能查询</strong>。</p>
+<ul>
+<li>Schema变化时（Hive操作create table/drop table/alter table add columns）使用：<br>invalidate metadata  //重新加载所有库中的所有表（不推荐，还不如重启Catalogd进程）<br>invalidate metadata [table]  //重新加载指定的某个表</li>
+<li>数据变化时（Hive操作insert into、load data、alter table add partition、Alter table drop partition或HDFS增删重命名文件）使用：<br>refresh [table]   //刷新某个表<br>refresh [table] partition [partition] //刷新某个表的某个分区</li>
+<li><font size="3" color="red">注意：invalidate会清除表的缓存并从MetaStore重新同步元数据，代价较大；refresh会重用之前的元数据，仅仅执行文件刷新操作，它能够检测到表中分区的增加和减少，代价相对小些</font></li>
+</ul>
+<!-- 负载均衡：采用Round Robin轮询调度算法（依次将一个域名解析到多个IP地址的调度不同服务器的计算方法）来实现负载均衡,将任务提交到不同的节点上 -->
+
+<h2 id="在CDH使用Impala"><a href="#在CDH使用Impala" class="headerlink" title="在CDH使用Impala"></a>在CDH使用Impala</h2><p>Impala相关进程：<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Impala/Impala-02.JPG" alt="alt Impala-02">  </p>
+<p>在StateStore的WEBUI <a href="http://cdh101:25010/" target="_blank" rel="noopener">http://cdh101:25010/</a> 可以查看Impala集群监控状态和配置信息：<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Impala/Impala-03.JPG" alt="alt Impala-03">  </p>
+<p>在Catalog的WEBUI <a href="http://cdh101:25020/" target="_blank" rel="noopener">http://cdh101:25020/</a> 可以看到各个库表元数据信息、Schema及占用内存大小<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Impala/Impala-04.JPG" alt="alt Impala-04">  </p>
+<p>在Impala Daemon的WEBUI <a href="http://cdh102:25000/" target="_blank" rel="noopener">http://cdh102:25000/</a> 可以看到该进程信息  在<a href="http://cdh102:25000/queries" target="_blank" rel="noopener">http://cdh102:25000/queries</a> 可以查看该节点执行SQL的详情<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Impala/Impala-07.JPG" alt="alt Impala-07"><br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Impala/Impala-08.JPG" alt="alt Impala-08">  </p>
+<p>在CDH Impala组件中可以查看执行SQL任务的详细信息<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Impala/Impala-05.JPG" alt="alt Impala-05"><br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Impala/Impala-06.JPG" alt="alt Impala-06"> </p>
+<p>一些重要的常用的impala-shell使用命令</p>
+<pre><code class="shell">impala-shell -i host指定Coordinator
+-d 指定连接到哪个库
+-q &quot;select ...&quot; 不进入impala-shell直接查询某语句返回结果到命令行
+-f file 执行文件中的sql
+-p 获取执行计划
+-o 保存执行结果到文件
+-h 帮助
+进入Impala-shell后：
+shell &lt;shell&gt;  不退出impala-shell执行系统命令
+profile 分析Query执行，以便于性能调优（比-p更多的信息）</code></pre>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><p>文件格式推荐parquet，查询效率高<br>避免碎片文件，注意文件的大小<br>根据实际的文件大小和个数选择分区的粒度<br>分区字段最好使用小的存储格式<br>使用compute stats进行性能分析，提高join效率<br>最小化返回数据量<br>使用explain确认执行计划是否高效<br>使用summary确认硬件消耗<br>使用profile进行性能调优<br>使用hdfs缓存提升查询性能<br>使用profile查看是否有hdfs块倾斜，合理分配block大小</p>
+<p>总结：</p>
+<ol>
+<li>Impala是典型的MPP架构实时查询分析引擎，类似的引擎还有ClickHouse</li>
+<li>Impala非常适合即时报表展示的场景</li>
+<li>使用Impala一定要注意元数据缓存问题以及所查询的表文件个数、倾斜问题，否则会严重拖慢效率</li>
+<li>多参考以上最佳实践部分</li>
+</ol>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><p><a href="http://impala.apache.org/docs/build/impala-3.4.pdf" target="_blank" rel="noopener">Impala-3.4 PDF Document</a><br><a href="https://blog.csdn.net/qq_38483094/article/details/95797505" target="_blank" rel="noopener">Impala介绍以及优劣</a><br><a href="https://cwiki.apache.org/confluence/display/IMPALA/Impala+Home" target="_blank" rel="noopener">Cloudera Impala Wiki</a><br><a href="https://github.com/cloudera/Impala" target="_blank" rel="noopener">Impala Github repository</a><br><a href="https://blog.csdn.net/weixin_39478115/article/details/77506322" target="_blank" rel="noopener">Impala架构</a></p>
 
 </div>
 
@@ -654,16 +692,16 @@ chmod 777 /opt/alluxio-2.1.0/logs/user
     <div class="post-guide">
         <div class="item left">
             
-              <a href="/174820fd/">
+              <a href="/welcome/">
                   <i class="fa fa-angle-left" aria-hidden="true"></i>
-                  Apache Zeppelin初探
+                  
               </a>
             
         </div>
         <div class="item right">
             
-              <a href="/44511/">
-                Alluxio-基于内存的虚拟分布式存储系统
+              <a href="/f5da73a2/">
+                大数据脱敏方案调研
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
               </a>
             
