@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		实现基于Spark的数据脱敏 | 
+	 
+	佳境的技术专区
+	</title>
+	
+	<!-- keywords,description -->
+	
+		<meta name="keywords" content="数据安全," />
+	 
+		<meta name="description" content="二次开发Spark使其支持简单数据脱敏" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmilytech.github.io@hexo/themes/hexo-theme-tree/source/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">佳境的技术专区</a>
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="https://shmily-qjj.top/" class="menu-item-link" target="_self">
+				<input type="image" src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/img/logo/gotoMain.png" width="90" height="35" alt="回到主站"/>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://shmily-qjj.top/about/" target="_blank" rel="noopener" class="menu-item-link">
+				<input type="image" src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/img/logo/aboutMe.png" width="90" height="35" alt="关于我"/>
+			</a>
+		</li>
+
+		<li class="menu-item">
+			<a href="https://github.com/Shmilyqjj" class="menu-item-link" target="_blank">
+<!--				<i class="fa fa-github fa-2x"></i>-->
+				<input type="image" src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/img/logo/myGithub.png" width="90" height="35" alt="关于我"/>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01数据结构与算法
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/6a894937/">
+										基础算法学习
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02计算机网络
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/undefined/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03操作体统
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/undefined/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04编程语言
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Java
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/508b5c7/">
+										系统学习JVM
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/6f97dc89/">
+										线程进程与锁
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Python
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2ed52290/">
+										高效运行Python方案
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										05数据库
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										MySQL
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										原理深入
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/7c15e85/">
+										MySQL索引原理深入
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/1f7eb1b3/">
+										数据库事务ACID理解
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										操作
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/3c26421b/">
+										Mysql Event Scheduler
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/96009187/">
+										浅谈group by与distinct去重
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06分布式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/undefined/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07容器
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/undefined/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08大数据
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										其他
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/4b21953d/">
+										分享我的技术调研流程
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/39595/">
+										记一次参加QCon全球软件开发大会
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/BigdataExceptionsSummary/">
+										大数据平台常见异常处理汇总
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										平台运维
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/38328/">
+										CentOS7安装CDH6全程记录
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据仓库
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/44511/">
+										Alluxio-基于内存的虚拟分布式存储系统
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/5f26355/">
+										Apache Kudu总结
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/26078/">
+										Sqoop学习笔记
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据可视化
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/174820fd/">
+										Apache Zeppelin初探
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据安全
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/f5da73a2/">
+										大数据脱敏方案调研
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file active">
+									<a href="/4cf161e5/">
+										实现基于Spark的数据脱敏
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										离线计算
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/7fbbfd34/">
+										Hive3.x新特性
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/1ae37d82/">
+										Impala-基于内存的高效SQL交互查询引擎
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/pyspark_pandas/">
+										使用PySpark优化Pandas
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/welcome/">
+										欢迎
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	实现基于Spark的数据脱敏
+</h1>
+<div class="article-meta">
+	
+	<span>佳境Shmily</span>
+	<span>2020-12-11 22:16:00</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/技术/">技术</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<h1 id="实现基于Spark的数据脱敏"><a href="#实现基于Spark的数据脱敏" class="headerlink" title="实现基于Spark的数据脱敏"></a>实现基于Spark的数据脱敏</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&emsp;&emsp;Spark是当前大数据领域不可替代的重要组件，拥有成熟的生态、强大的性能和广泛的应用场景，但在数据安全越来越重要的今天，Spark在对数据权限的管控能力方面仍然没有进展。<br>&emsp;&emsp;不仅仅是Spark，大多数大数据生态圈中的组件都缺乏对数据安全的管控，于是很多硬件资源较充裕的公司会将数据全量脱敏后分别存放，牺牲存储空间来达到数据脱敏的目的；而有些公司选择<a href="http://ranger.apache.org/" target="_blank" rel="noopener">Apache Ranger</a>作为权限管控组件，但Ranger(目前版本2.2)在设计上对各个大数据组件版本有着严格的依赖，且暂时不支持对Spark的权限管控。<br>&emsp;&emsp;经过阅读Ranger源码，以及在测试环境试用后，确定了Ranger方案不可行，我决定在Spark基础上二次开发来实现数据脱敏功能。</p>
+<h2 id="知识准备"><a href="#知识准备" class="headerlink" title="知识准备"></a>知识准备</h2><ol>
+<li>SparkSQL执行过程：SQL-&gt;Parser(Antlr)-&gt;AST-&gt;Catalyst-&gt;UnresolvedLogicalPlan-&gt;Analyzer-&gt;Optimizer-&gt;PhysicalPlan-&gt;执行计算和IO</li>
+<li>以上过程直到物理计划都是继承自LogicalPlan，共四种：<br><font size="3" color="red">UnresolvedLogicalPlan</font>: 也叫ParsedLogicalPlan，是根据语法树解析SQL后得到的逻辑计划，没有关联catalog，没有获取底层存储的元数据信息，也就是说SELECT *在这个阶段不会被解析为具体字段（AnalyzedLogicalPlan、OptimizedLogicalPlan、PhysicalPlan可看到具体字段）。<br><font size="3" color="red">AnalyzedLogicalPlan</font>: 结合表的Catalog，绑定元数据，resolve化LogicalPlan，替换掉UnresolvedLogicalPlan，这里会检查表是否存在以及Schema完整性。绑定元数据是否成功主要有两点：1.子节点是否是resolved 2.输入的数据类型是否满足要求，具体可参考类：Expression，Analyzer类。<br><font size="3" color="red">OptimizedLogicalPlan</font>:对AnalyzedLogicalPlan进行优化，有很多RuleExecutor，如谓词下推，Filter裁剪，WholeStageCodegen(大量类型转换和虚函数调用转为即时编译)，RemoveLiteralFromGroupExpressions移除group下的常量，RemoveRepetitionFromGroupExpressions移除重复的group表达式等…<br><font size="3" color="red">PhysicalPlan</font>:将OptimizedLogicalPlan转换为实际执行的步骤，具体可参考SparkPlanner类。  <pre><code class="scala">// 拿到四种执行计划的方法
+val sql:String = &quot;select * from qjj&quot;
+// 单独获取UnresolvedLogicalPlan，不用读元数据，效率最高
+val unresolvedLogicalPlan:LogicalPlan = sqlContext.sparkSession.sessionState.sqlParser.parsePlan(sql)
+// 获取QueryExecution
+val qe:org.apache.spark.sql.execution.QueryExecution = sqlContext.sparkSession.sql(sql).queryExecution 
+// 通过QueryExecution获取所有计划包括ParsedLogicalPlan，AnalyzedLogicalPlan，OptimizedLogicalPlan和PhysicalPlan 
+val parsedLogicalPlan:LogicalPlan = qe.logical
+val analyzedLogicalPlan:LogicalPlan = qe.analyzed
+val optimizedLogicalPlan:LogicalPlan = qe.optimizedPlan
+val physicalPlan:LogicalPlan = qe.executedPlan
+val physicalPlan:LogicalPlan = qe.sparkPlan</code></pre>
+</li>
+<li>LogicalPlan包含三种子类型UnaryNode,BinaryNode和LeafNode，没种子类型下又有多种子类型，子类型下又包含子类型如：Project,GlobalLimit,LocalLimit,CreateTable,Distinct,SubqueryAlias,InsertIntoTable,Join,Aggregate,Union,Filter等。</li>
+<li>Dataset和DataFrame的区别与联系：<br>联系：<br> 1.API统一，使用上没差别<br> 2.DataFrame算是特殊类型的Dataset，是每个元素都为ROW类型的Dataset（DataFrame = Dataset[Row]）<br>区别：<br> 1.Dataset是强类型，编译时检查类型，DataFrame是弱类型，执行时才检查类型<br> 2.Dataset是通过Encoder进行序列化，支持动态的生成代码，直接在bytes的层面进行排序过滤等的操作；而DataFrame是采用可选的java的标准序列化或是kyro进行序列化</li>
+<li>Spark的TemporaryView：<br>Spark的四种视图创建方法：<br> ①df.createGlobalTempView(df.createOrReplaceGlobalTempView) 创建全局临时视图，多个SparkSession共享 SparkSQL写法：create global temporary view view_name(col1,col2…) as select (col1,col2…) from table_name;<br> ②df.createTempView(df.createOrReplaceTempView) 创建Session级别的临时视图,多个SparkSession不共享 SparkSQL写法：create temporary view view_name(col1,col2…) as select (col1,col2…) from table_name;<br>通过SQL创建视图时会有几种异常：<br>It is not allowed to define a TEMPORARY view with IF NOT EXISTS. （创建视图不支持if not exists）<br>It is not allowed to add database prefix <code>test</code> for the TEMPORARY view name. （创建视图不支持库名前缀）<br>Not allowed to create a permanent view by referencing a temporary function. （不支持用带临时UDF的逻辑创建永久视图）<br>视图删除：<br>spark.catalog.dropTempView(‘view_name’)<br>spark.catalog.dropGlobalTempView(‘global_view_name’)<br>全局视图调用：<br>spark.sql(“select * from global_temp.view_name”)  需要加global_temp前缀</li>
+<li>从一条SQL到ThriftServer上的一个Job，如何生成：<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Spark/DataMasking/DataMasking-04.png" alt="alt"><br>（该图引自<a href="https://blog.csdn.net/weixin_45723348/article/details/107392903" target="_blank" rel="noopener">SparkSQL并行执行多个Job的探索</a>，文章不错，推荐有空看看）</li>
+</ol>
+<h2 id="基于SparkThriftServer的数据脱敏"><a href="#基于SparkThriftServer的数据脱敏" class="headerlink" title="基于SparkThriftServer的数据脱敏"></a>基于SparkThriftServer的数据脱敏</h2><h3 id="工作原理流程"><a href="#工作原理流程" class="headerlink" title="工作原理流程"></a>工作原理流程</h3><p>流程：<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Spark/DataMasking/DataMasking-01.jpg" alt="alt"><br>原理：<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Spark/DataMasking/DataMasking-02.jpg" alt="alt">  </p>
+<h3 id="实现细节"><a href="#实现细节" class="headerlink" title="实现细节"></a>实现细节</h3><p>数据库建表：</p>
+<pre><code class="sql">-- 脱敏规则表
+create table desensitization_rules(
+rule_name varchar(100) not null primary key comment &quot;脱敏规则名称&quot;,
+rule_type varchar(100) not null comment &quot;类型-可逆、不可逆、加密、解密&quot;,
+encrypt_column_type varchar(100) not null comment &quot;可加密的敏感数据分类如phone_num、id_card、bank_account、cust_name&quot;,
+encrypt_udf_name varchar(100) comment &quot;对应脱敏UDF名称&quot;,
+decrypt_udf_name varchar(100) comment &quot;解密UDF名称&quot;,
+create_datetime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP comment &quot;规则创建时间&quot;
+)ENGINE=Innodb comment=&#39;脱敏规则库-用于配置脱敏规则与对应的加密UDF、解密UDF和加密数据类型的映射关系&#39;;
+-- 脱敏配置表
+create table desensitization_conf(
+db_table varchar(255) comment &quot;库名.表名，为*代表对所有表都生效&quot;,
+column_name varchar(255) not null comment &quot;单个敏感字段名&quot;,
+column_type varchar(100) not null comment &quot;敏感字段数据分类&quot;,
+rule_name varchar(100) not null comment &quot;脱敏规则名称&quot;,
+create_datetime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP comment &quot;创建时间&quot;,
+PRIMARY KEY (db_table,column_name)
+)ENGINE=Innodb comment=&#39;脱敏配置表-具体到字段的脱敏配置，该表决定如何脱敏，未配置的 默认是白名单&#39;;
+-- 角色权限表
+create table desensitization_role_permissions(
+role varchar(100) not null primary key comment &quot;角色&quot;,
+authorized_dbs varchar(1000) NOT NULL comment &quot;有查敏感信息权限的库，逗号隔开，all表示全部库&quot;,
+authorized_tables text NOT NULL comment &quot;有查敏感信息权限的表，逗号隔开-库名.表名，all表示全部表&quot;,
+authorized_data_type varchar(1000) NOT NULL comment &quot;有权限的敏感数据类型如phone_num、id_card、account_num、cust_name，all表示数据类型&quot;,
+authorized_columns text NOT NULL comment &quot;有权限的字段名，多个字段逗号隔开，all表示全部字段&quot;,
+create_datetime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP comment &quot;角色创建时间&quot;
+)ENGINE=Innodb comment=&#39;角色权限表-用于配置每个角色的权限&#39;;
+-- 用户权限表
+create table desensitization_user_role(
+user varchar(100) not null primary key comment &quot;用户名&quot;,
+role varchar(255) not null comment &quot;角色，多个角色逗号隔开&quot;,
+create_datetime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP comment &quot;添加时间&quot;
+)ENGINE=Innodb comment=&#39;用户角色映射关系表-默认无查询敏感数据的权限&#39;;
+-- ----------配置数据----------
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;*&quot;,&quot;phone_num&quot;,&quot;phone_num&quot;,&quot;HideLast4PhoneNumber&quot;);
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;*&quot;,&quot;phone&quot;,&quot;phone_num&quot;,&quot;HideLast4PhoneNumber&quot;);
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;*&quot;,&quot;phone_number&quot;,&quot;phone_num&quot;,&quot;HideLast4PhoneNumber&quot;);
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;*&quot;,&quot;mobile&quot;,&quot;phone_num&quot;,&quot;HideLast4PhoneNumber&quot;);
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;*&quot;,&quot;mobile_phone&quot;,&quot;phone_num&quot;,&quot;HideLast4PhoneNumber&quot;);
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;*&quot;,&quot;mobile_no&quot;,&quot;phone_num&quot;,&quot;HideLast4PhoneNumber&quot;);
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;*&quot;,&quot;phone_no&quot;,&quot;phone_num&quot;,&quot;HideLast4PhoneNumber&quot;);
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;*&quot;,&quot;cust_name&quot;,&quot;cust_name&quot;,&quot;HideUserName&quot;);
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;*&quot;,&quot;bank_card_no&quot;,&quot;bank_account&quot;,&quot;HideBankCardNumber&quot;); 
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;test_pn&quot;,&quot;phone_num&quot;,&quot;phone_num&quot;,&quot;HideMid4PhoneNumber&quot;);
+insert into desensitization_conf(db_table,column_name,column_type,rule_name) values (&quot;test_pn&quot;,&quot;phone&quot;,&quot;phone_num&quot;,&quot;HideMid4PhoneNumber&quot;);
+insert into desensitization_role_permissions(role,authorized_dbs,authorized_tables,authorized_data_type,authorized_columns) values (&quot;admin&quot;,&quot;all&quot;,&quot;all&quot;,&quot;all&quot;,&quot;&quot;);
+insert into desensitization_role_permissions(role,authorized_dbs,authorized_tables,authorized_data_type,authorized_columns) values (&quot;d_bd&quot;,&quot;d_bd&quot;,&quot;&quot;,&quot;&quot;,&quot;cust_name&quot;);
+insert into desensitization_role_permissions(role,authorized_dbs,authorized_tables,authorized_data_type,authorized_columns) values (&quot;d_qjj&quot;,&quot;&quot;,&quot;d_bd.test_qjj&quot;,&quot;&quot;,&quot;cust_name&quot;);
+insert into desensitization_user_role(user,role) values (&quot;admin&quot;,&quot;d_bd,d_qjj&quot;);  
+insert into desensitization_user_role(user,role) values (&quot;bd_admin&quot;,&quot;admin&quot;);  </code></pre>
+<p>这样设计权限考虑的点：<br>  1.用户权限按角色管理<br>  2.用户可以有多个角色<br>  3.可以方便用户临时申请权限<br>  4.敏感数据的字段可以支持默认脱敏配置<br>  5.可以细粒度地指定某个用户查询某个表某个字段时如何脱敏<br>  6.对数据进行敏感信息分类，方便按敏感数据类型控制权限（表设计了但实际没实现这块）</p>
+<p>代码实现<br>SQLAnalyzer类，工具类，主要是匹配SQL中的表以及判断SQL类型，下面列举主要方法</p>
+<pre><code class="scala">  /**
+   * Get all tables in a select sql
+   * @param sql
+   * @return List(table1,table2) or List()
+   */
+  def getTablesInSelect(sql:String):List[String] = &quot;(?i)(?:from|join)\\s+[a-zA-Z0-9_.]+&quot;
+    .r.findAllIn(sql)
+    .map(x =&gt; x.replaceFirst(&quot;(?i)(?:from|join)\\s+&quot;, &quot;&quot;))
+    .toList
+
+  /**
+   * Determines SQL is a select statement or not.
+   * @param sql
+   * @return boolean
+   */
+  def isSelectSQL(sql:String):Boolean =
+    !StringUtils.isBlank(sql) &amp;&amp;
+      sql.trim.replaceAll(&quot;\r|\n|\r\n&quot;,&quot; &quot;).matches(&quot;(?i)\\s*select.*&quot;)
+
+  /**
+   * Determines SQL is a Data transfer statement or not.
+   * @param sql
+   * @return boolean
+   */
+  def isSelectInsertSQL(sql:String):Boolean =
+    !StringUtils.isBlank(sql) &amp;&amp;
+      sql.trim.replaceAll(&quot;\r|\n|\r\n&quot;,&quot; &quot;).matches(&quot;(?i)\\s*insert.*select.*&quot;)</code></pre>
+<p>DesensitizationModule类，脱敏模块，实现了：读取并缓存脱敏配置；用户权限聚合，鉴权，创建临时视图并应用脱敏规则，替换SQL生成真正执行的SQL，其中getDesensitizedSQL是这个类提供给外部的方法，返回的是实际执行的SQL，用于替换原来的逻辑计划。loadDesensitizationMeta也是提供给外部的方法，用于加载脱敏配置和用户权限信息。</p>
+<pre><code class="scala">package org.apache.spark.sql.hive.thriftserver.desensitization
+
+import com.smy.exceptions.DesensitizationException
+import org.apache.spark.internal.Logging
+import org.apache.spark.sql.hive.thriftserver.xxxxx.getDF  // 连接mysql，查询脱敏配置得到dataframe的方法
+import org.apache.spark.sql.{SQLContext, SparkSession}
+import org.apache.spark.sql.hive.thriftserver.desensitization.SQLAnalyzer._
+import scala.tools.scalap.scalax.util.StringUtil
+
+private[hive] object DesensitizationModule extends Logging{
+  // entities
+  case class DesensitizationConf(columnName: String, columnType: String, ruleName:String)
+  case class Permission(role: String, authorizedDBs: String, authorizedTables:String, authorizedDataTypes:String, authorizedColumns:String)
+
+  object DesensitizationMeta {
+    var RULE_UDF_MAP: Map[String, String] = _  //desensitization_rules
+    var DBTABLE_DESENSITIZATION_CONF_MAP: Map[String, Set[DesensitizationConf]] = _ //desensitization_conf
+    var USER_PERMISSION_MAP: Map[String, Permission] = _ //desensitization_user_permissions
+    var ROLE_PERMISSION_MAP: Map[String, Permission] = _ //desensitization_role_permissions
+    var DEFAULT_COLUMN_UDF_MAPPING: Map[String,String] = _
+  }
+
+  private def getMergedParas(para1: String, para2: String, isRolePara: Boolean=false): String = {
+    if(isRolePara &amp;&amp; (para1.split(&quot;,&quot;).contains(&quot;admin&quot;) || para2.split(&quot;,&quot;).contains(&quot;admin&quot;))) return &quot;admin&quot;
+    if (para1 != null &amp;&amp; para1.nonEmpty &amp;&amp; para2 != null &amp;&amp; para2.nonEmpty) {
+      if(para1.split(&quot;,&quot;).contains(&quot;all&quot;) || para2.split(&quot;,&quot;).contains(&quot;all&quot;)) return &quot;all&quot;
+      s&quot;$para1,$para2&quot;
+    } else if (para1 != null &amp;&amp; para1.nonEmpty) {
+      if(para1.split(&quot;,&quot;).contains(&quot;all&quot;)) return &quot;all&quot;
+      para1
+    } else if (para2 != null &amp;&amp; para2.nonEmpty){
+      if(para1.split(&quot;,&quot;).contains(&quot;all&quot;)) return &quot;all&quot;
+      para2
+    }else{
+      &quot;&quot;
+    }
+  }
+  private def permissionReduce(p1: Permission, p2: Permission): Permission = Permission(
+    getMergedParas(p1.role,p2.role,true),
+    getMergedParas(p1.authorizedDBs, p2.authorizedDBs),
+    getMergedParas(p1.authorizedTables, p2.authorizedTables),
+    getMergedParas(p1.authorizedDataTypes, p2.authorizedDataTypes),
+    getMergedParas(p1.authorizedColumns, p2.authorizedColumns))
+
+  private def getFullTableName(tableName:String):String = if (tableName.isEmpty || tableName.equals(&quot;*&quot;)) &quot;*&quot; else if(tableName.contains(&quot;.&quot;)) tableName else s&quot;default.$tableName&quot;
+
+  /**
+   * Load desensitization metadata
+   * @param sqlContext
+   * @return true-&gt;succeed false-&gt;failed
+   */
+  def loadDesensitizationMeta(sqlContext: SQLContext):Boolean = {
+    logWarning(&quot;Loading desensitization meta.&quot;)
+    try {
+      // load RULE_UDF_MAP
+      DesensitizationMeta.RULE_UDF_MAP = getDF(sqlContext, &quot;select rule_name,encrypt_udf_name from desensitization_rules&quot;)
+        .collect()
+        .map(x =&gt; (x.get(&quot;rule_name&quot;), x.get(&quot;encrypt_udf_name&quot;))).toMap
+
+      // load DBTABLE_DESENSITIZATION_CONF_MAP
+      val desensitizationConfMap = scala.collection.mutable.Map[String,scala.collection.mutable.MutableList[DesensitizationConf]]()
+      getDF(sqlContext,&quot;select db_table,column_name,column_type,rule_name from desensitization_conf&quot;)
+        .collect()
+        .foreach{x =&gt;
+          val desensitizationConf = DesensitizationConf(x.get(&quot;column_name&quot;), x.get(&quot;column_type&quot;), x.get(&quot;rule_name&quot;))
+          if(desensitizationConfMap.get(x.get(&quot;db_table&quot;)).orNull==null){
+            desensitizationConfMap.put(x.get(&quot;db_table&quot;),scala.collection.mutable.MutableList(desensitizationConf))
+          }else{
+            desensitizationConfMap(x.get(&quot;db_table&quot;)) += desensitizationConf
+          }
+      }
+      DesensitizationMeta.DBTABLE_DESENSITIZATION_CONF_MAP = desensitizationConfMap.map(x =&gt; (getFullTableName(x._1),x._2.toSet)).toMap
+
+      // load USER_PERMISSION_MAP and ROLE_PERMISSION_MAP
+      DesensitizationMeta.ROLE_PERMISSION_MAP = getDF(sqlContext, &quot;select role,authorized_dbs,authorized_tables,authorized_data_type,authorized_columns from desensitization_role_permissions&quot;)
+        .collect()
+        .map {x =&gt;
+          (x.get(&quot;role&quot;), Permission(x.get(&quot;role&quot;),
+            x.getOrDefault(&quot;authorized_dbs&quot;,&quot;&quot;),
+            x.getOrDefault(&quot;authorized_tables&quot;,&quot;&quot;),
+            x.getOrDefault(&quot;authorized_data_type&quot;,&quot;&quot;),
+            x.getOrDefault(&quot;authorized_columns&quot;,&quot;&quot;)))
+        }.toMap
+      DesensitizationMeta.USER_PERMISSION_MAP = getDF(sqlContext, &quot;select user,role from desensitization_user_role where user != &#39;&#39; and role != &#39;&#39;&quot;)
+        .collect()
+        .map{ x =&gt; (x.get(&quot;user&quot;),
+          x.get(&quot;role&quot;)
+            .split(&quot;,&quot;)
+            .map(role =&gt; DesensitizationMeta.ROLE_PERMISSION_MAP.getOrElse(role,null))
+            .filter(x =&gt; x != null)
+            .reduce(permissionReduce)
+          )
+        }.toMap
+
+      // load DEFAULT_COLUMN_UDF_MAPPING  (db_table is * means default global column desensitization configuration.)
+      DesensitizationMeta.DEFAULT_COLUMN_UDF_MAPPING = DesensitizationMeta.DBTABLE_DESENSITIZATION_CONF_MAP.getOrElse(&quot;*&quot;,Set())
+        .map { ddc =&gt;
+          val udfName = DesensitizationMeta.RULE_UDF_MAP.getOrElse(ddc.ruleName,null)
+          if (udfName == null) {
+            throw new DesensitizationException(s&quot;The mask rule ${ddc.ruleName} on column ${ddc.columnName} is not right or no Configured UDF.Please check desensitization_conf.&quot;)
+          }
+          (ddc.columnName, udfName)
+        }.toMap
+
+      logWarning(s&quot;## RULE_UDF_MAP ==&gt; ${DesensitizationMeta.RULE_UDF_MAP}&quot;)
+      logWarning(s&quot;## DBTABLE_DESENSITIZATION_CONF_MAP ==&gt; ${DesensitizationMeta.DBTABLE_DESENSITIZATION_CONF_MAP}&quot;)
+      logWarning(s&quot;## USER_PERMISSION_MAP ==&gt; ${DesensitizationMeta.USER_PERMISSION_MAP}&quot;)
+      logWarning(s&quot;## DEFAULT_COLUMN_UDF_MAPPING ==&gt; ${DesensitizationMeta.DEFAULT_COLUMN_UDF_MAPPING}&quot;)
+      true
+    }catch {
+      case e:Exception =&gt;
+        throw new DesensitizationException(&quot;Exception when reloadAuth&quot;,e)
+        false
+    }
+  }
+
+/**
+   * create temporary view and get the view name.
+   * The temporary view will clear when spark session exited.
+   * @param spark SQLContext
+   * @param tableName Full tableName with database prefix.
+   * @param userName
+   */
+  def createAndGetTempViewName(spark:SQLContext,userName:String,tableName:String):String={
+    val columns = spark.table(tableName).columns
+    val sourceCols = columns.mkString(&quot;,&quot;)
+    val newViewName = tableName.replace(&quot;.&quot;,&quot;_&quot;) + &quot;_&quot; + System.currentTimeMillis()
+    try{
+      val colUDFMap:Map[String,String] = getTableColUDFMapping(tableName, userName, columns)
+      if(colUDFMap.isEmpty) return tableName
+      logWarning(s&quot;### Desensitization table:$tableName user:$userName columnUDFMapping:$colUDFMap&quot;)
+      val viewCols = columns.map { col =&gt;
+        if (!colUDFMap.contains(col)) {
+          col
+        } else {
+          colUDFMap(col) + s&quot;($col)&quot;
+        }
+      }.mkString(&quot;,&quot;)
+
+      spark.sql(s&quot;create temporary view $newViewName($sourceCols) as select $viewCols from $tableName&quot;)
+      newViewName
+    }catch {
+      case e:Exception =&gt;
+        logError(s&quot;Failed to create a masked temporary view on table $tableName.&quot;,e)
+      // If there is an exception, return the source table name.
+      tableName
+    }
+  }
+
+  /**
+   * Determine whether the user has access to the table and get the desensitization strategy of table columns.
+   * @param tableName  FullTableName with database prefix
+   * @param userName  userName
+   * @param tableColumns  表的所有字段
+   * @return columnUDFMap
+   */
+  def getTableColUDFMapping(tableName:String,userName:String,tableColumns:Array[String]):Map[String,String] = {
+    logInfo(s&quot;Begin to get table($tableName) user($userName) auth and col-udf mapping.&quot;)
+    // Judge User permission.
+    val userPermission = DesensitizationMeta.USER_PERMISSION_MAP.getOrElse(userName,Permission(&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;,&quot;&quot;))
+    if(userPermission.role.equals(&quot;admin&quot;)){
+      // user role is admin.
+      return Map()
+    }else if(&quot;all&quot;.equals(userPermission.authorizedDBs) || userPermission.authorizedDBs.split(&quot;,&quot;).contains(tableName.split(&quot;\\.&quot;)(0))) {
+      //User has permissions for this database.
+      return Map()
+    }else if(&quot;all&quot;.equals(userPermission.authorizedTables) || userPermission.authorizedTables.split(&quot;,&quot;).map(getFullTableName).contains(tableName)) {
+      //User has permissions for this table.
+      return Map()
+    }else if(&quot;all&quot;.equals(userPermission.authorizedDataTypes)){
+      return Map()
+    }else if(&quot;all&quot;.equals(userPermission.authorizedColumns)){
+      // User has permissions for all fields.
+      return Map()
+    }
+
+    val result:scala.collection.mutable.Map[String,String] = scala.collection.mutable.Map[String,String]()
+    // Apply specified desensitization conf.
+    // TODO: User has access to one dataType?
+    val authorizedCols:Set[String] = userPermission.authorizedColumns.split(&quot;,&quot;).toSet
+    val unauthorizedCols:Set[String] = DesensitizationMeta.DEFAULT_COLUMN_UDF_MAPPING.keySet -- authorizedCols
+    val tableSpecificDesensitizationConf:Set[DesensitizationConf] = DesensitizationMeta.DBTABLE_DESENSITIZATION_CONF_MAP.getOrElse(tableName,Set())
+    if(tableSpecificDesensitizationConf.nonEmpty) {
+      logWarning(s&quot;Table $tableName has specific desensitization rules.&quot;)
+      tableSpecificDesensitizationConf.foreach{ tsdc =&gt;
+        val udfName = DesensitizationMeta.RULE_UDF_MAP.get(tsdc.ruleName).orNull
+        if (udfName == null) {
+          throw new DesensitizationException(s&quot;The mask rule ${tsdc.ruleName} on table $tableName column ${tsdc.columnName} is not right or no Configured UDF.Please check desensitization_conf.&quot;)
+        }
+        logInfo(s&quot;Apply specific desensitization udf: ${tsdc.columnName} =&gt; $udfName .&quot;)
+        result.put(tsdc.columnName,udfName)
+      }
+    }else{
+      logInfo(s&quot;There is no specific desensitization conf in table $tableName.Use default desensitization conf.&quot;)
+    }
+    // Apply default desensitization conf.
+    unauthorizedCols.foreach{ uc =&gt;
+      if(tableColumns.contains(uc) &amp;&amp; !result.contains(uc)) {
+        val udfName = DesensitizationMeta.DEFAULT_COLUMN_UDF_MAPPING.get(uc).orNull
+//        if (udfName == null) {
+//          throw new DesensitizationException(s&quot;There is no desensitization UDF associated with column $uc ,Please check desensitization_conf where db_table=&#39;*&#39;.&quot;)
+//        }
+        logInfo(s&quot;Apply default desensitization udf: $uc =&gt; $udfName .&quot;)
+        result.put(uc,udfName)
+      }
+    }
+    result.toMap
+  }
+
+  /**
+   * Main method to generate desensitized sql.
+   * @param spark sparkSession
+   * @param userName request user of this sql
+   * @param sql
+   * @return Desensitized sql
+   */
+  def getDesensitizedSQL(spark:SQLContext,userName:String,sql:String):String = {
+    if(isSelectSQL(sql)){
+      val tableList = getTablesInSelect(sql)
+      if(tableList.isEmpty){
+        return sql
+      }
+      var outputSQL:String = sql
+      tableList
+        .foreach { table =&gt;
+          val viewName = createAndGetTempViewName(spark, userName,getFullTableName(table))
+          logInfo(s&quot;tableName: $table =&gt; viewName: $viewName&quot;)
+          outputSQL = outputSQL.replace(table, viewName)
+        }
+      outputSQL
+    }else if(isSelectInsertSQL(sql)){
+      //TODO: There is a vulnerability in the export of sensitive data.
+      // &#39;insert select&#39; operation and &#39;create table as select&#39; operation.
+      sql
+    }else{
+      sql
+    }
+  }
+}</code></pre>
+<p><strong>寻找修改切入点</strong><br>org.apache.spark.sql.hive.thriftserver.SparkExecuteStatementOperation类，是ThriftServer提供服务的入口，其中我们只需要将执行时的逻辑计划替换掉即可，该类中execute方法中可以找到源码：</p>
+<pre><code class="scala">      // Always set the session state classloader to `executionHiveClassLoader` even for sync mode
+      if (!runInBackground) {
+        parentSession.getSessionState.getConf.setClassLoader(executionHiveClassLoader)
+      }
+
+      sqlContext.sparkContext.setJobGroup(statementId, substitutorStatement, forceCancel)
+      result = sqlContext.sql(statement)
+      logDebug(result.queryExecution.toString())
+      HiveThriftServer2.eventManager.onStatementParsed(statementId,
+        result.queryExecution.toString())
+      iter = if (sqlContext.getConf(SQLConf.THRIFTSERVER_INCREMENTAL_COLLECT.key).toBoolean) {
+        new IterableFetchIterator[SparkRow](new Iterable[SparkRow] {
+          override def iterator: Iterator[SparkRow] = result.toLocalIterator.asScala
+        })
+      } else {
+        new ArrayFetchIterator[SparkRow](result.collect())
+      }</code></pre>
+<p>我们可以明确的是statement是用户提交运行的SQL，后面触发计算操作时调用了result.collect()，则result就是这条SQL的结果集，我们需要修改的就是result这个dataframe对象。<br>修改方法很简单，用我们脱敏后的SQL重新生成ParsedLogicalPlan，再用Dataset.ofRows得到新的Dataset：</p>
+<pre><code class="scala">var logicalPlan = sqlContext.sparkSession.sessionState.sqlParser.parsePlan(statement)
+// Desensitization
+var sqlAfterDesensitization:String = statement
+try{
+  sqlAfterDesensitization = DesensitizationModule.getDesensitizedSQL(sqlContext, parentSession.getUserName, sql)
+  if(!sqlAfterDesensitization.equals(statement)){
+    logWarning(s&quot;### SQL has changed after Desensitization Module. outputSQL: $sqlAfterDesensitization ###&quot;)
+    logicalPlan = sqlContext.sparkSession.sessionState.sqlParser.parsePlan(sqlAfterDesensitization)
+  }else{
+    logInfo(s&quot;###经过脱敏模块处理后的SQL为: $statement 未发生改变###&quot;)
+  }
+}catch {
+  case e:Exception =&gt;
+    logError(&quot;***There may be some errors in DesensitizationModule.getDesensitizedSQL ***&quot;, e)
+  //          throw new DesensitizationException(&quot;Desensitization failed.&quot;,e)  // Table not found and sql syntax error also throw this.
+}
+
+result=Dataset.ofRows(sqlContext.sparkSession, logicalPlan)</code></pre>
+<p>这样在需要脱敏时逻辑计划就可以被替换并执行后续的操作了，返回给用户的数据也是脱敏后的数据。</p>
+<p><strong>UDF编写和注册</strong><br>DesensitizationUDFs类，注册脱敏UDF的统一入口，在org.apache.spark.sql.hive.thriftserver.SparkSQLSessionManager的<strong>OpenSession</strong>方法中调用：DesensitizationUDFs.register(ctx,username)，为正在登陆的用户调用注册UDF，保证UDF可用。</p>
+<pre><code class="scala">package org.apache.spark.sql.hive.thriftserver.desensitization
+
+import org.apache.commons.lang.StringUtils
+import org.apache.spark.internal.Logging
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.hive.thriftserver.UDFUtil
+
+/**
+ * Desensitization UDF
+ * Created by Shmily on 2020/11/23.
+ */
+object DesensitizationUDFs extends Serializable with Logging{
+//  private val logger: Logger = LoggerFactory.getLogger(Desensitization.getClass)
+
+  /**
+   * [Irreversible] Hide the mid 4 digits of mobile phone number
+   * @param phoneNumber
+   * @return Encrypted phoneNumber
+   */
+  def HideMid4PhoneNumber(phoneNumber:String): String = {
+    if(phoneNumber==null){
+      return phoneNumber
+    }
+    if(StringUtils.isBlank(phoneNumber)){
+      return &quot;&quot;
+    }
+    phoneNumber.length match {
+      case 11 =&gt; phoneNumber.replaceAll(&quot;(\\w{3})\\w*(\\w{4})&quot;, &quot;$1****$2&quot;)
+      case 7 =&gt; phoneNumber.replaceAll(&quot;(\\w{3})\\w*&quot;, &quot;$1****&quot;)
+      case _ =&gt; phoneNumber
+    }
+  }
+
+  /**
+   * [Irreversible] Hide the last 4 digits of mobile phone number
+   * @param phoneNumber
+   * @return Encrypted phoneNumber
+   */
+  def HideLast4PhoneNumber(phoneNumber:String): String = {
+    if(phoneNumber==null){
+      return phoneNumber
+    }
+    if(StringUtils.isBlank(phoneNumber)){
+      return &quot;&quot;
+    }
+    phoneNumber.length match {
+      case 11 =&gt; phoneNumber.replaceAll(&quot;(\\w{7})\\w*&quot;, &quot;$1****&quot;)
+      case 7 =&gt; phoneNumber.replaceAll(&quot;(\\w{3})\\w*&quot;, &quot;$1****&quot;)
+      case _ =&gt; phoneNumber
+    }
+  }
+
+  /**
+   * [Irreversible] Keep first char only.
+   * @param name
+   * @return Encrypted Name
+   */
+  def HideUserName(name:String): String = {
+    if(name==null){
+      return name
+    }
+    if(StringUtils.isBlank(name)){
+      return &quot;&quot;
+    }
+    val length = name.length
+    name.substring(0,1).concat(&quot;*&quot; * (length-1))
+  }
+
+  /**
+   * [Irreversible] ID Card keep 1-6 and last 3 digits.
+   * @param id
+   * @return Encrypted id
+   */
+  def HideIDCard(id:String): String = {
+    if(id==null){
+      return id
+    }
+    if(StringUtils.isBlank(id)){
+      return &quot;&quot;
+    }
+    id.length match {
+      case 15 =&gt; id.replaceAll(&quot;(\\w{6})\\w*(\\w{3})&quot;, &quot;$1******$2&quot;)
+      case 18 =&gt; id.replaceAll(&quot;(\\w{6})\\w*(\\w{3})&quot;, &quot;$1*********$2&quot;)
+      case _ =&gt; id
+    }
+  }
+
+  /**
+   * [Irreversible] ID Card keep 1-6 and last 3 digits.
+   * @param bankCardId
+   * @return Encrypted bankCardId
+   */
+  def HideBankCardNumber(bankCardId:String): String = {
+    if(bankCardId==null){
+      return bankCardId
+    }
+    if(StringUtils.isBlank(bankCardId)){
+      return &quot;&quot;
+    }
+    bankCardId.length match {
+      case 16 =&gt; bankCardId.replaceAll(&quot;(\\w{6})\\w*(\\w{3})&quot;, &quot;$1*******$2&quot;)
+      case 17 =&gt; bankCardId.replaceAll(&quot;(\\w{6})\\w*(\\w{3})&quot;, &quot;$1********$2&quot;)
+      case 19 =&gt; bankCardId.replaceAll(&quot;(\\w{6})\\w*(\\w{3})&quot;, &quot;$1**********$2&quot;)
+      case _ =&gt; bankCardId
+    }
+  }
+
+  /**
+   * register all desensitization udf
+   * @param ctx SQLContext
+   */
+  def register(ctx:SQLContext,username:String):Unit = {
+    logWarning(s&quot;Registering desensitization UDFs for session [user: $username]&quot;)
+    ctx.udf.register(&quot;hide_mid_4_phone_number&quot;,HideMid4PhoneNumber _)
+    ctx.udf.register(&quot;hide_last_4_phone_number&quot;,HideLast4PhoneNumber _)
+    ctx.udf.register(&quot;hide_user_name&quot;,HideUserName _)
+    ctx.udf.register(&quot;hide_id_card&quot;,HideIDCard _)
+    ctx.udf.register(&quot;hide_bank_card_number&quot;,HideBankCardNumber _)
+  }
+}</code></pre>
+<p><strong>实现启动时加载脱敏配置</strong><br>org.apache.spark.sql.hive.thriftserver.HiveThriftServer2类，含有ThriftServer的main方法，在启动ThriftServer服务时运行，在DeveloperApi注解下的startWithContext方法添加加载脱敏配置信息的方法loadDesensitizationMeta，保证每次启动ThriftServer生效配置。</p>
+<pre><code class="scala">@DeveloperApi
+def startWithContext(sqlContext: SQLContext): HiveThriftServer2 = {
+  val executionHive = HiveUtils.newClientForExecution(
+    sqlContext.sparkContext.conf,
+    sqlContext.sessionState.newHadoopConf())
+  DesensitizationModule.loadDesensitizationMeta(sqlContext)
+......</code></pre>
+<p><strong>实现手动刷新脱敏配置</strong><br>org.apache.spark.sql.hive.thriftserver.server.SparkSQLOperationManager类，用于管理Spark的Operation，其中newExecuteStatementOperation是实际执行statement的方法，在这里判断SQL如果为”refresh_desensitization_auth”则调用loadDesensitizationMeta方法刷新脱敏配置信息</p>
+<pre><code class="scala">  override def newExecuteStatementOperation(
+      parentSession: HiveSession,
+      statement: String,
+      confOverlay: JMap[String, String],
+      async: Boolean): ExecuteStatementOperation = synchronized {
+    val sqlContext = sessionToContexts.get(parentSession.getSessionHandle)
+    Authentication.checkIp(parentSession)
+    Authentication.checkUser(parentSession)
+    require(sqlContext != null, s&quot;Session handle: ${parentSession.getSessionHandle} has not been&quot; +
+      s&quot; initialized or had already closed.&quot;)
+    val conf = sqlContext.sessionState.conf
+    val hiveSessionState = parentSession.getSessionState
+    setConfMap(conf, hiveSessionState.getOverriddenConfigurations)
+    setConfMap(conf, hiveSessionState.getHiveVariables)
+    val runInBackground = async &amp;&amp; conf.getConf(HiveUtils.HIVE_THRIFT_SERVER_ASYNC)
+    var sql = statement.toLowerCase.trim
+    var statement2 = statement
+    if (sql.startsWith(&quot;create&quot;) &amp;&amp; sql.indexOf(&quot;options(&quot;) != -1) { //remove &quot;\n&quot; when creating external hbase table
+      statement2 = statement.replaceAll(&quot;\n&quot;, &quot; &quot;)
+    }
+    // load desensitization
+    if (&quot;refresh_desensitization_auth&quot;.equals(sql)) {
+      if (DesensitizationModule.loadDesensitizationMeta(sqlContext)) {  // 这里可以加限制admin权限的用户才能刷新
+        statement2 = &quot;select &#39;refresh_desensitization_auth succeed&#39;&quot;
+      } else {
+        statement2 = &quot;select &#39;refresh_desensitization_auth failed&#39;&quot;
+      }
+    }
+......</code></pre>
+<h3 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h3><p><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Spark/DataMasking/DataMasking-03.jpg" alt="alt">  </p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><font size="3" color="blue">优点</font>：<br>  1.无额外的硬件成本开销<br>  2.性能损耗小<br>  3.用户无感知<br>  4.权限设计灵活<br><font size="3" color="blue">缺点</font>：<br>  1.用户如果用敏感字段关联，结果不准备<br>  2.如果用户将敏感数据创建临时表，且字段名称非通用敏感字段名称，就没办法脱敏了<br><font size="3" color="blue">改进</font>：设置跑批程序，遍历数仓的表，根据数据特征自动发现敏感字段，并自动迭代脱敏配置库</p>
+<h2 id="基于Spark执行计划自定义Rule的数据脱敏"><a href="#基于Spark执行计划自定义Rule的数据脱敏" class="headerlink" title="基于Spark执行计划自定义Rule的数据脱敏"></a>基于Spark执行计划自定义Rule的数据脱敏</h2><p>未完待续…<br><font size="3" color="red">。。。</font><br><font size="3" color="blue">！！！</font><br><font face="verdana" color="green"  size="3">？？？</font></p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/1ae37d82/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  Impala-基于内存的高效SQL交互查询引擎
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/f5da73a2/">
+                大数据脱敏方案调研
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: 'zUyVEaHo59RUUwiPTChPEeBj-gzGzoHsz',
+			appKey: 'xIEyTcrkTuJLz6ewPbpTj8mz',
+			placeholder: '欢迎评论...',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2020-<span id="footerYear"></span> 
+	<a href="/">佳境Shmily</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Theme <a href="//github.com/wujun234/hexo-theme-tree" target="_blank">Tree</a>
+	by <a href="//github.com/wujun234" target="_blank">WuJun</a>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>
