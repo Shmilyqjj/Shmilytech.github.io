@@ -648,7 +648,7 @@ return phone;
 </li>
 <li><p>使用<a href="http://shardingsphere.apache.org/index_zh.html" target="_blank" rel="noopener">Apache ShardingSphere</a>实现数据脱敏<br>&emsp;&emsp;Apache ShardingSphere是一套开源的分布式数据库中间件解决方案由Sharding-JDBC、Sharding-Proxy和Sharding-Sidecar（规划中）这3款相互独立，却又能够混合部署配合使用的产品组成。它使用客户端直连数据库，以jar包形式提供服务，无需额外部署和依赖，可理解为增强版的JDBC驱动，完全兼容JDBC和各种ORM框架。<br>&emsp;&emsp;数据脱敏模块属于ShardingSphere分布式数据治理这一核心功能下的子功能模块。它通过对用户输入的SQL进行解析，并依据用户提供的脱敏配置对SQL进行改写，从而实现对原文数据进行加密，并将原文数据(可选)及密文数据同时存储到底层数据库。在用户查询数据时，它又从数据库中取出密文数据，并对其解密，最终将解密后的原始数据返回给用户。Apache ShardingSphere分布式数据库中间件自动化&amp;透明化了数据脱敏过程，让用户无需关注数据脱敏的实现细节，像使用普通数据那样使用脱敏数据。此外，无论是已在线业务进行脱敏改造，还是新上线业务使用脱敏功能，ShardingSphere都可以提供一套相对完善的解决方案。<br>&emsp;&emsp;具体可参考<a href="https://blog.csdn.net/qq_45533884/article/details/103891515" target="_blank" rel="noopener">详细文档</a>和<a href="https://www.baidu.com/link?url=QTdabexCVJ1WBt-HbZ1u2MsA5j3wqQJSGtjk3CDimzmdAY9meEnNPRYVGWEMFwNTqQuGoi-0K2T_k7b_C7BI4_&wd=&eqid=b6d6174200048198000000065f953634" target="_blank" rel="noopener">官网</a>。<br>&emsp;&emsp;</p>
 </li>
-<li><p>修改ThriftServer源码，在ThriftServer端使用Antlr4解析SQL，匹配脱敏规则库后针对敏感字段自动套用UDF并提交执行。（JDBC端修改不知道是不是也可行，感觉ThriftServer源码改起来更简单点）<br>通过修改SparkThriftServer源码实现数据脱敏的方法见我的另一篇博客：<a href="https://shmily-qjj.top/4cf161e5/" target="_blank" rel="noopener">实现基于Spark的数据脱敏</a></p>
+<li><p>修改ThriftServer源码，在ThriftServer端使用Antlr4解析SQL，匹配脱敏规则库后针对敏感字段自动套用UDF并提交执行。（JDBC端修改不知道是不是也可行，感觉ThriftServer源码改起来更简单点）<br>通过修改SparkThriftServer源码实现数据脱敏的方法见我的另一篇博客：<a href="https://tech.shmily-qjj.top/4cf161e5/">实现基于Spark的数据脱敏</a></p>
 </li>
 </ol>
 <h3 id="实时数据脱敏"><a href="#实时数据脱敏" class="headerlink" title="实时数据脱敏"></a>实时数据脱敏</h3><ol>
