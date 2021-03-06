@@ -9,7 +9,7 @@
 	
 	<title>
 	
-		Hive3.x来了 | 
+		Hive3.x初探 | 
 	 
 	佳境的技术专区
 	</title>
@@ -18,7 +18,7 @@
 	
 		<meta name="keywords" content="Hive," />
 	 
-		<meta name="description" content="Hive 3.x来了,学习一下新特性" />
+		<meta name="description" content="了解Hive 3.x" />
 	
 
 	<!-- favicon -->
@@ -580,6 +580,7 @@
 <li>不再支持内嵌Metastore  </li>
 <li>Spark Catalog不与Hive Catalog集成，但可以互相访问  </li>
 <li>批处理使用TEZ，实时查询使用LLAP  </li>
+<li>Hive3支持联邦查询</li>
 </ol>
 <h2 id="架构原理"><a href="#架构原理" class="headerlink" title="架构原理"></a>架构原理</h2><ol>
 <li>TEZ执行引擎  </li>
@@ -625,9 +626,12 @@
 </li>
 <li><p>元数据映射表<br>Hive会从JDBC数据源创建两个数据库：information_schema和sys。所有Metastore表都映射到表空间，并在sys中可用。information_schema数据显示系统的状态。  </p>
 </li>
+<li><p>支持基于成本优化的智能下推<br>查询一个数据源时如果读取全部数据后再进行分析是很高成本的，通过JDBC获取过多数据导致资源浪费以及性能不佳，Hive依靠其storage handler接口和Apache Calcite支持的基于成本的优化器（CBO）实现了对其他系统的智能下推。特别是，Calcite提供与查询的逻辑表示中的运算符子集匹配的规则，然后生成在外部系统中等效的表示以执行更多操作。Hive在其查询计划器中将计算推送到外部系统，并且依靠Calcite生成外部系统支持的查询语言。storage handler的实现负责将生成的查询发送到外部系统，检索其结果，并将传入的数据转换为Hive内部表示，以便在需要时进一步处理。这不仅限于SQL系统：例如，Apache Hive也可以联邦Apache Druid或Apache Kafka进行查询，正如我们在最近的博文中所描述的，Druid可以非常高效的处理时序数据的汇总和过滤。因此，当对存储在Druid中的数据源执行查询时，Hive可以将过滤和聚合推送给Druid，生成并发送JSON查询到引擎暴露的REST API。另一方面，如果是查询Kafka上的数据，Hive可以在分区或offset上推送过滤器，从而根据条件读取topic中的数据。</p>
+</li>
 <li><p>Hive 3.0其他特性<br>1、连接Kafka Topic，简化了对Kafka数据的查询<br>2、执行查询所需的少量守护进程简化了监视和调试<br>3、工作负载管理(会话资源限制)：用户会话数，服务器会话数，每个服务器每个用户会话数等限制，防止资源争用导致资源不足<br>4、会话状态，内部数据结构，密码等驻留在客户端而不是服务器上<br>5、黑名单可以限制内存配置以防止HiveServer不稳定，可以使用不同的白名单和黑名单配置多个HiveServer实例，以建立不同级别的稳定性  </p>
 </li>
 </ol>
+<h2 id="联邦查询"><a href="#联邦查询" class="headerlink" title="联邦查询"></a>联邦查询</h2><p>支持Oracle、MySQL、Kafka、Druid、HDFS、PostgreSQL等多个数据源的联邦查询，可以对多个数据源统一访问。<br>联邦查询的优势：<br>1.单个SQL方言和API<br>2.集中统一的权限控制和审计跟踪（Hive支持表、行、列的访问控制）<br>3.统一治理<br>4.能够合并来自多个数据源的数据</p>
 <h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><ol>
 <li><p>优点：<br>性能，安全性，对ACID事物的支持，对任务资源调度的优化。</p>
 </li>
@@ -635,7 +639,7 @@
 </li>
 </ol>
 <h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><p><a href="https://link.zhihu.com/?target=https%3A//hortonworks.com/tutorial/interactive-sql-on-hadoop-with-hive-llap/">https://link.zhihu.com/?target=https%3A//hortonworks.com/tutorial/interactive-sql-on-hadoop-with-hive-llap/</a><br><a href="https://link.zhihu.com/?target=https%3A//dzone.com/articles/3x-faster-interactive-query-with-apache-hive-llap">https://link.zhihu.com/?target=https%3A//dzone.com/articles/3x-faster-interactive-query-with-apache-hive-llap</a><br><a href="https://link.zhihu.com/?target=https%3A//community.hortonworks.com/articles/149486/llap-sizing-and-setup.html">https://link.zhihu.com/?target=https%3A//community.hortonworks.com/articles/149486/llap-sizing-and-setup.html</a></p>
-<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.jianshu.com/p/a1324fb4eb80" target="_blank" rel="noopener">Hive3新特性</a><br><a href="https://www.cnblogs.com/rongfengliang/p/6991020.html" target="_blank" rel="noopener">Apache Tez 了解</a><br><a href="https://blog.csdn.net/SunWuKong_Hadoop/article/details/86240707" target="_blank" rel="noopener">Hive 3.x 功能介绍</a><br><a href=""></a><br><a href=""></a><br><a href=""></a></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://www.jianshu.com/p/a1324fb4eb80" target="_blank" rel="noopener">Hive3新特性</a><br><a href="https://www.cnblogs.com/rongfengliang/p/6991020.html" target="_blank" rel="noopener">Apache Tez 了解</a><br><a href="https://blog.csdn.net/SunWuKong_Hadoop/article/details/86240707" target="_blank" rel="noopener">Hive 3.x 功能介绍</a><br><a href="https://blog.csdn.net/hadoop_sc/article/details/103765887" target="_blank" rel="noopener">使用Apache Hive3实现跨数据库的联邦查询</a></p>
 
 </div>
 
