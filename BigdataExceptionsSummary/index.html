@@ -347,6 +347,44 @@
 								<li class="directory">
 									<a href="#" class="directory">
 										<i class="fa fa-plus-square-o"></i>
+										交互查询
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/5f26355/">
+										Apache Kudu总结
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/1ae37d82/">
+										Impala-基于内存的高效SQL交互查询引擎
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/4c197c46/">
+										Presto-基于内存的高效SQL交互查询引擎
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
 										其他
 									</a>
 									
@@ -408,24 +446,6 @@
 										数据仓库
 									</a>
 									
-							<ul>
-								<li class="file">
-									<a href="/44511/">
-										Alluxio-基于内存的虚拟分布式存储系统
-									</a>
-								</li>
-								<div class="article-toc" style="display: none;"></div>
-							</ul>
-			
-							<ul>
-								<li class="file">
-									<a href="/5f26355/">
-										Apache Kudu总结
-									</a>
-								</li>
-								<div class="article-toc" style="display: none;"></div>
-							</ul>
-			
 							<ul>
 								<li class="file">
 									<a href="/26078/">
@@ -492,6 +512,26 @@
 								<li class="directory">
 									<a href="#" class="directory">
 										<i class="fa fa-plus-square-o"></i>
+										数据湖
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/44511/">
+										Alluxio-基于内存的虚拟分布式存储系统
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
 										离线计算
 									</a>
 									
@@ -499,15 +539,6 @@
 								<li class="file">
 									<a href="/7fbbfd34/">
 										Hive3.x新特性
-									</a>
-								</li>
-								<div class="article-toc" style="display: none;"></div>
-							</ul>
-			
-							<ul>
-								<li class="file">
-									<a href="/1ae37d82/">
-										Impala-基于内存的高效SQL交互查询引擎
 									</a>
 								</li>
 								<div class="article-toc" style="display: none;"></div>
@@ -592,6 +623,8 @@
 hadoop dfsadmin -report</code></pre>
 <p>修复坏块除了上面讲过的hdfs debug recoverLease -path <path-of-the-file> -retries <retry times>命令外，还可以通过hadoop fs -setrep -R 3 / 命令，设置副本，副本小于3的情况会自动恢复三副本，修复后还有坏块那就是一个副本都没有了，只能丢了。</p>
 </li>
+<li><p>两个NN均为Standby，重启后过一会又都Standby<br>NN均报错：<br>java.util.concurrent.ExecutionException: java.io.IOException: Cannot find any valid remote NN to service request!<br>Caused by: java.io.IOException: Cannot find any valid remote NN to service request!<br>Exception from remote name node RemoteNameNodeInfo [nnId=namenode37, ipcAddress=hostname/ip:8022, httpAddress=<a href="http://hostname:9870]">http://hostname:9870]</a>, try next.<br>org.apache.hadoop.ipc.RemoteException(org.apache.hadoop.ipc.StandbyException): Operation category JOURNAL is not supported in state standby. Visit <a href="https://s.apache.org/sbnn-error" target="_blank" rel="noopener">https://s.apache.org/sbnn-error</a><br>解决：强制切换主备sudo -uhdfs hdfs haadmin -transitionToActive –forcemanual namenode37（nnId在hdfs-site有配） 切换后重启Failover Controller或ZKFC。</p>
+</li>
 </ol>
 <h2 id="Hive相关"><a href="#Hive相关" class="headerlink" title="Hive相关"></a>Hive相关</h2><ol>
 <li>HiveMetaStore状态不良导DDLSQL耗时200s以上<br>HMS进程报错：<font size="3" color="red">hive metastore server Failed to sync requested HMS notifications up to the event ID xxx</font><br>原因分析：查看sentry异常CounterWait源码发现传递的id比currentid大导致一直等待超时，超时时间默认为200s（sentry.notification.sync.timeout.ms）。<br>开启了hdfs-sentry acl同步后，hdfs，sentry，HMS三者间权限同步的消息处理。当突然大批量的目录权限消息需要处理，后台线程处理不过来，消息积压滞后就会出现这个异常。这个异常不影响集群使用，只是会导致create，drop table慢需要等200s，这样等待也是为了追上最新的id。我们这次同时出现了HMS参与同步消息处理的线程被异常退出，导致sentry的sentry_hms_notification_id表数据一直没更新，需要重启HMS。如果积压了太多消息，让它慢慢消费处理需要的时间太长，可能一直追不上，这时可以选择丢掉这些消息。<br>解决：<br> ①可以通过设置sentry.notification.sync.timeout.ms参数调小超时时间，减小等待时间，积压不多的话可以让它自行消费处理掉。<br> ②丢掉未处理的消息，在sentry的sentry_hms_notification_id表中插入一条最大值(等于当前消息的id，从notification_sequence表中获取) ，重启sentry服务。（notification_log 表存储了消息日志信息）</li>
@@ -617,7 +650,7 @@ hadoop dfsadmin -report</code></pre>
 <h2 id="Hive相关-1"><a href="#Hive相关-1" class="headerlink" title="Hive相关"></a>Hive相关</h2><ol>
 <li><p>HBase外部表报<font size="3" color="red">Unexpected end-of-input</font><br>起因：使用Hive创建HBase外部表时正常，但使用HBase外部表时报Unexpected end-of-input: was expecting closing<br>分析过程：翻阅源码部分发现异常是在解析外部表创建JSON时发生，于是对比建表语句和Hive元数据库中的TABLE_PARAMS表信息得到原因<br>原因：创建hbase外部表catalog太长导致schema太长，而hive元数据表mysql里的table_params字段param_value字段类型是varchar(4000)建表时由于schema太长，超过4000字符的部分被截断。而使用该表的时候会读元数据，但因为元数据不完整而报错。<br>解决：<br>①分多次建表<br>②改varchar(4000)为longtext然后重建表（影响无法评估，没尝试）</p>
 </li>
-<li><p>Hive和Spark查询Hive表报java.net.UnknownHostException: nameservice1<br>分析：由于机器HDFS HA配置发生变动，关掉了高可用，所以nameservice变成了ip:8020，报这个错，首先检查了/etc/hadoop/conf/hdfs-site.xml里面无dfs.nameservices配置，证明配置文件没问题。使用hivecli，desc formatted某几张表，发现表的LOCATION均为hdfs://nameservice1/xx 找到了问题的原因，元数据错误，所以需要去Hive元数据库批量修改元数据。<br>解决：连接到Hive metastore元数据库，批量修改LOCATION：update hive.SDS set LOCATION=concat(“hdfs://ip:8020”,substring(LOCATION,20,length(LOCATION)-19)) where LOCATION like “hdfs://nameservice1%”; 无需重启服务即可生效，问题解决。</p>
+<li><p>Hive和Spark查询Hive表报java.net.UnknownHostException: nameservice1<br>分析：由于机器HDFS HA配置发生变动，关掉了高可用，所以nameservice变成了ip:8020，报这个错，首先检查了/etc/hadoop/conf/hdfs-site.xml里面无dfs.nameservices配置，证明配置文件没问题。使用hivecli，desc formatted某几张表，发现表的LOCATION均为hdfs://nameservice1/xx 找到了问题的原因，元数据错误，所以需要去Hive元数据库批量修改元数据。<br>解决：连接到Hive metastore元数据库，批量修改LOCATION：<br>update hive.SDS set LOCATION=concat(“hdfs://ip:8020”,substring(LOCATION,20,length(LOCATION)-19)) where LOCATION like “hdfs://nameservice1%”;<br>update hive.DBS set DB_LOCATION_URI=concat(“hdfs://ip:8020”,substring(DB_LOCATION_URI,20,length(DB_LOCATION_URI)-19)) where DB_LOCATION_URI like “hdfs://nameservice1%”;<br>无需重启服务即可生效，问题解决。</p>
 </li>
 </ol>
 <h2 id="HBase相关"><a href="#HBase相关" class="headerlink" title="HBase相关"></a>HBase相关</h2><ol>
@@ -639,16 +672,16 @@ hadoop dfsadmin -report</code></pre>
     <div class="post-guide">
         <div class="item left">
             
-              <a href="/welcome/">
+              <a href="/4c197c46/">
                   <i class="fa fa-angle-left" aria-hidden="true"></i>
-                  
+                  交互查询
               </a>
             
         </div>
         <div class="item right">
             
               <a href="/1ae37d82/">
-                离线计算
+                交互查询
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
               </a>
             
