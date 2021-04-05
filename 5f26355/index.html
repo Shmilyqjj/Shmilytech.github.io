@@ -914,8 +914,76 @@ TBLPROPERTIES (
 INSERT INTO impala_kudu.test SELECT * FROM default.test;
 
 SELECT * FROM impala_kudu.test;  -- 这时会发现数据顺序发生变化了，因为Hash分区的原因</code></pre>
+<p><strong>6.Kudu表备份到Hive</strong><br>实测在数据量不大 百G级别 使用Impala实现Kudu数据全量同步Hive，不会对Kudu服务造成影响</p>
+<pre><code class="Impala">CREATE TABLE default.impala_kudu_test LIKE impala_kudu.test;
+INSERT INTO default.impala_kudu_test SELECT * FROM impala_kudu.test;</code></pre>
 <p>在官网了解更多：<a href="https://kudu.apache.org/docs/kudu_impala_integration.html" target="_blank" rel="noopener">Using Apache Kudu with Apache Impala</a></p>
-<h3 id="Kudu-Spark"><a href="#Kudu-Spark" class="headerlink" title="Kudu + Spark"></a>Kudu + Spark</h3><p><a href="https://blog.csdn.net/nazeniwaresakini/article/details/104220206/" target="_blank" rel="noopener">https://blog.csdn.net/nazeniwaresakini/article/details/104220206/</a></p>
+<h3 id="Kudu-Spark"><a href="#Kudu-Spark" class="headerlink" title="Kudu + Spark"></a>Kudu + Spark</h3><pre><code class="pom">    &lt;!-- scala.bin.version: 2.12, kudu.version: 1.10.0 --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.kudu&lt;/groupId&gt;
+        &lt;artifactId&gt;kudu-spark2_${scala.bin.version}&lt;/artifactId&gt;
+        &lt;version&gt;${kudu.version}&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.apache.kudu&lt;/groupId&gt;
+        &lt;artifactId&gt;kudu-spark2-tools_${scala.bin.version}&lt;/artifactId&gt;
+        &lt;version&gt;${kudu.version}&lt;/version&gt;
+   &lt;/dependency&gt;</code></pre>
+<p>Spark连接并操作Kudu表</p>
+<pre><code class="scala">import org.apache.kudu.client._
+import collection.JavaConverters._
+
+// Read a table from Kudu
+val df = spark.read
+  .options(Map(&quot;kudu.master&quot; -&gt; &quot;kudu.master:7051&quot;, &quot;kudu.table&quot; -&gt; &quot;kudu_table&quot;))
+  .format(&quot;kudu&quot;).load
+
+// Query using the Spark API...
+df.select(&quot;id&quot;).filter(&quot;id &gt;= 5&quot;).show()
+
+// ...or register a temporary table and use SQL
+df.createOrReplaceTempView(&quot;kudu_table&quot;)
+val filteredDF = spark.sql(&quot;select id from kudu_table where id &gt;= 5&quot;).show()
+
+// Use KuduContext to create, delete, or write to Kudu tables
+val kuduContext = new KuduContext(&quot;kudu.master:7051&quot;, spark.sparkContext)
+
+// Create a new Kudu table from a DataFrame schema
+// NB: No rows from the DataFrame are inserted into the table
+kuduContext.createTable(
+    &quot;test_table&quot;, df.schema, Seq(&quot;key&quot;),
+    new CreateTableOptions()
+        .setNumReplicas(1)
+        .addHashPartitions(List(&quot;key&quot;).asJava, 3))
+
+// Insert data
+kuduContext.insertRows(df, &quot;test_table&quot;)
+
+// Delete data
+kuduContext.deleteRows(filteredDF, &quot;test_table&quot;)
+
+// Upsert data
+kuduContext.upsertRows(df, &quot;test_table&quot;)
+
+// Update data
+val alteredDF = df.select(&quot;id&quot;, $&quot;count&quot; + 1)
+kuduContext.updateRows(filteredRows, &quot;test_table&quot;)
+
+// Data can also be inserted into the Kudu table using the data source, though the methods on
+// KuduContext are preferred
+// NB: The default is to upsert rows; to perform standard inserts instead, set operation = insert
+// in the options map
+// NB: Only mode Append is supported
+df.write
+  .options(Map(&quot;kudu.master&quot;-&gt; &quot;kudu.master:7051&quot;, &quot;kudu.table&quot;-&gt; &quot;test_table&quot;))
+  .mode(&quot;append&quot;)
+  .format(&quot;kudu&quot;).save
+
+// Check for the existence of a Kudu table
+kuduContext.tableExists(&quot;another_table&quot;)
+
+// Delete a Kudu table
+kuduContext.deleteTable(&quot;unwanted_table&quot;)</code></pre>
 <h3 id="Kudu-Hive"><a href="#Kudu-Hive" class="headerlink" title="Kudu + Hive"></a>Kudu + Hive</h3><p><strong>与Hive MetaStore集成</strong><br>官网写的很详细。<br>在官网了解更多：<a href="https://kudu.apache.org/docs/hive_metastore.html" target="_blank" rel="noopener">Using the Hive Metastore with Kudu</a></p>
 <h3 id="Kudu-APIs"><a href="#Kudu-APIs" class="headerlink" title="Kudu APIs"></a>Kudu APIs</h3><p><strong>Kudu常用Command Lines</strong><br><a href="https://kudu.apache.org/docs/command_line_tools_reference.html#_command_hierarchy" target="_blank" rel="noopener">Kudu客户端命令</a><br>Kudu有很多命令，大致分几类：</p>
 <pre><code class="shell">su - kudu
