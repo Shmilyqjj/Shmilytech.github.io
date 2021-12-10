@@ -189,6 +189,7 @@ git config --global core.safecrlf false
 git config --global core.autocrlf input #提交时转换为LF，检出时不转换
 git config http.proxy socks5://127.0.0.1:7891  # 因为我的Clash代理sock端口是7891
 git config --global --add remote.origin.proxy ""
+git config --global core.editor "vim"
 ```
 
 ### 开机自启脚本部署
@@ -500,6 +501,19 @@ systemctl enable libvirtd
 systemctl start libvirtd
 usermod -a -G kvm shmily
 启动qem/virt-manager
+
+### 安卓应用支持
+参考UOS(Deepin)对于安卓应用支持的解决方案，采用XDroid作为安卓应用支持软件。
+先下载XDroid软件：[官网下载XDroid](https://www.linzhuotech.com/Product/download)
+执行tar -zxvf xDroidInstall-x86_64-vxxxx.tar.gz 解压
+执行 ./xDroidInstall-x86_64-vxxxx.run 安装XDroid
+安装后重启一到两次即可完成安装
+应用商城
+![alt ](https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Manjaro/ManjaroInstall-38.png) 
+已安装应用
+![alt ](https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Manjaro/ManjaroInstall-39.png) 
+使用Android APP
+![alt ](https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Manjaro/ManjaroInstall-40.png) 
 
 
 ## 系统界面美化
