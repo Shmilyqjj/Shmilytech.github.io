@@ -150,6 +150,7 @@ Exception in thread "main" java.lang.Exception: org.apache.spark.SparkException:
 相关Git Issue: [SeaTunnel-848](https://github.com/InterestingLab/seatunnel/issues/848)
 相关文档：[ClickHouse类型对照表](https://interestinglab.github.io/seatunnel-docs/#/zh-cn/v1/configuration/output-plugins/Clickhouse?id=clickhouse%e7%b1%bb%e5%9e%8b%e5%af%b9%e7%85%a7%e8%a1%a8)
 解决：写入ClickHouse之前需要通过SeaTunnel中的 [**Filter插件**](https://interestinglab.github.io/seatunnel-docs/#/zh-cn/v1/configuration/filter-plugin) 中的 [**SQL**](https://interestinglab.github.io/seatunnel-docs/#/zh-cn/v1/configuration/filter-plugins/Sql) 或者 [**Convert**](https://interestinglab.github.io/seatunnel-docs/#/zh-cn/v1/configuration/filter-plugins/Convert) 插件将各字段转换为对应格式，否则会产生报错
+注意：若配置中有filter插件且需要filter生效，则不要在output指定source_table_name这个选项，若指定了source_table_name的值等于input中result_table_name的值，则会绕过filter(filter不生效)
 修改配置
 vim config/kudu2ch.batch.conf内容如下
 ```config
@@ -172,13 +173,13 @@ input {
 }
 filter {
   sql {
-       sql = "select cust_no,tag_code,date_format(update_datetime, 'yyyy-MM-dd') as update_datetime from kudu_k_tab_sb_source"
+       sql = "select cust_no,tag_code,date_format(update_datetime, 'yyyy-MM-dd') as update_datetime from kudu_table_source"
   }
 }
 output {
  clickhouse {
     # 指定从哪个源抽取数据
-    source_table_name="kudu_table_source"
+    # source_table_name="kudu_table_source"
     host = "ch_jdbc_ip:8123"
     clickhouse.socket_timeout = 50000
     database = "test"
@@ -227,7 +228,7 @@ Query id: 8d6bc13d-c49d-408a-8e07-3d2691e3ebbb
 ```config
 filter {
   sql {
-       sql = "select cust_no, tag_code, date_format(cast(cast(update_datetime as int) - 8*3600 as timestamp), 'yyyy-MM-dd HH:mm:ss') as update_datetime from kudu_k_tab_sb_source"
+       sql = "select cust_no, tag_code, date_format(cast(cast(update_datetime as int) - 8*3600 as timestamp), 'yyyy-MM-dd HH:mm:ss') as update_datetime from kudu_table_source"
   }
 }
 ```
@@ -394,7 +395,7 @@ filter {
 }
 output {
  clickhouse {
-    source_table_name="impala_table_source"
+    # source_table_name="impala_table_source"
     host = "ch_jdbc_ip:8123"
     clickhouse.socket_timeout = 50000
     database = "default"
@@ -422,7 +423,7 @@ Memory is likely oversubscribed. Reducing query concurrency or configuring admis
 ```error
 org.apache.kudu.client.NonRecoverableException: Scanner 10150be3c0b944829d4eea1bc2251e24 not found (it may have expired)
 ```
-原因及解决：网络策略处有问题或者带宽过低，对带宽做了限制，取消限制即可  若担心带宽问题 可以降低并行度抽取
+原因及解决：通常我们需要知道，当带宽占用接近总带宽的90%时，丢包情形就会发生。网络策略有问题或者带宽过低，对带宽做了限制，都会导致这样的问题，取消限制即可。若担心带宽问题，可以适当降低并行度抽取。
 
 
 2022.1月-SeaTunnel正式进入Apache孵化器，我认为这是个比较优秀的项目，是个低代码实现数据抽取的高效平台，有兴趣可以多关注这个项目。
