@@ -8,12 +8,18 @@
 	<!-- title -->
 	
 	<title>
+	
+		Linux Bind服务配置DNS解析 | 
 	 
 	佳境的技术专区
 	</title>
 	
 	<!-- keywords,description -->
+	
+		<meta name="keywords" content="DNS," />
 	 
+		<meta name="description" content="DNS解析服务配置" />
+	
 
 	<!-- favicon -->
 	
@@ -118,7 +124,7 @@
 									</a>
 									
 							<ul>
-								<li class="file">
+								<li class="file active">
 									<a href="/39a9ed67/">
 										Linux Bind服务配置DNS解析
 									</a>
@@ -588,45 +594,246 @@
 
 	<!-- 引入正文 -->
 	<div id="content">
-		<div id="index">
-	
-		<div class="index-li">
-			<a href="/6a894937/">
-				<h2 class="index-title">
-					基础算法学习
-				</h2>
-				<div class="index-brief">
-					前言算法与数据结构从现在开始重视还来得及！为何要重视算法与数据结构？
+		<h1 id="article-title">
 
-算法能力代表了基本功水平，能代表一个程序员功底是否扎实。
-算法和数据结构的思想以及时间复杂度空间复杂度的概念是提高工作效率，学习能力和成长潜力的重要途径。
-算法能力是设计一个系统(造轮子)的重要基础。
-下层基础决定上层建筑！算法
-					...
-				</div>
-			</a>
-                <div class="article-meta">
-				    <span>2020-04-27</span>
-                    
-                            
-                                
-                                    <span>
-                                        <i class="fa fa-folder" aria-hidden="true"></i>
-                                        <a href="/categories/技术/">技术</a>
-										
-                                    </span>
-                                
-                            
-                    
-                </div>
-		</div>	
+	Linux Bind服务配置DNS解析
+</h1>
+<div class="article-meta">
 	
-	
-	<div id="index-paginator">
-		
-	</div>
+	<span>佳境Shmily</span>
+	<span>2022-06-01 20:12:10</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/技术/">技术</a>
+						
+                    </span>
+                
+            
+		</div>
+    
 </div>
 
+<div id="article-content">
+	<h1 id="Linux服务器配置DNS解析服务Bind"><a href="#Linux服务器配置DNS解析服务Bind" class="headerlink" title="Linux服务器配置DNS解析服务Bind"></a>Linux服务器配置DNS解析服务Bind</h1><h2 id="BIND简介"><a href="#BIND简介" class="headerlink" title="BIND简介"></a>BIND简介</h2><p>BIND是现在使用最为广泛的DNS服务器软件（Berkeley Internet Name Domain）,支持先今绝大多数的操作系统（Linux，UNIX，Mac，Windows）。BIND服务的名称称之为named。DNS默认使用UDP、TCP协议，使用端口为53（domain），953（mdc，远程控制使用）。</p>
+<h2 id="DNS服务端配置"><a href="#DNS服务端配置" class="headerlink" title="DNS服务端配置"></a>DNS服务端配置</h2><ol>
+<li>安装bind<br>准备两台DNS服务器 kdc1(10.2.5.3) kdc2(10.2.5.4) 安装<pre><code class="shell">yum -y install bind bind-utils
+rpm -qa | grep bind</code></pre>
+</li>
+<li>配置bind<pre><code class="text">配置文件分别位于两个位置
+/etc/named.conf　BIND服务主配置文件
+/var/named/　　　zone文件（域的dns信息）</code></pre>
+先修改主DNS Server上的配置文件/etc/named.conf<br>cp /etc/named.conf /etc/named.conf.template<br>vim /etc/named.conf<pre><code class="conf">//
+// named.conf
+//
+// Provided by Red Hat bind package to configure the ISC BIND named(8) DNS
+// server as a caching only nameserver (as a localhost DNS resolver only).
+//
+// See /usr/share/doc/bind*/sample/ for example named configuration files.
+//
+// See the BIND Administrator&#39;s Reference Manual (ARM) for details about the
+// configuration located in /usr/share/doc/bind-{version}/Bv9ARM.html
+</code></pre>
+</li>
+</ol>
+<p>options {<br>        listen-on port 53 { 127.0.0.1;10.2.5.3; };<br>        listen-on-v6 {none;};<br>        directory       “/var/named”;<br>        dump-file       “/var/named/data/cache_dump.db”;<br>        statistics-file “/var/named/data/named_stats.txt”;<br>        memstatistics-file “/var/named/data/named_mem_stats.txt”;<br>        recursing-file  “/var/named/data/named.recursing”;<br>        secroots-file   “/var/named/data/named.secroots”;<br>        allow-query-cache {any;};<br>        allow-query  { 10.2.5.0/8; };<br>        forward only;<br>        forwarders {10.2.5.2;8.8.8.8;};</p>
+<pre><code>    recursion yes;
+    allow-recursion { any;};
+
+    dnssec-enable no;
+    dnssec-validation no;
+    recursive-clients 1000000;
+    tcp-clients 10000;
+    send-cookie no;
+    require-server-cookie no;
+
+    /* Path to ISC DLV key */
+    bindkeys-file &quot;/etc/named.root.key&quot;;
+
+    managed-keys-directory &quot;/var/named/dynamic&quot;;
+
+    pid-file &quot;/run/named/named.pid&quot;;
+    session-keyfile &quot;/run/named/session.key&quot;;</code></pre><p>};</p>
+<p>logging {<br>        channel default_debug {<br>                file “data/named.run”;<br>                severity dynamic;<br>        };<br>};</p>
+<p>zone “.” IN {<br>        type hint;<br>        file “named.ca”;<br>};</p>
+<p>zone “shmily-qjj.top” IN {<br>        type master;<br>        file “shmily-qjj.top.zone”;<br>        notify yes;<br>        also-notify { 10.2.5.4; };<br>        allow-update { none; };<br>};<br>zone “10.in-addr.arpa” IN {<br>        type master;<br>        file “ptr.shmily-qjj.top.zone”;<br>        notify yes;<br>        also-notify { 10.2.5.4; };<br>        allow-update { none; };<br>};<br>#include “/etc/named.rfc1912.zones”;<br>#include “/etc/named.root.key”;</p>
+<pre><code>
+主DNS Server上添加解析ZONE文件
+正向解析文件 vim /var/named/shmily-qjj.top.zone 
+```zone
+$TTL    1D
+@               IN SOA  dns1.shmily-qjj.top.    admin.shmily-qjj.top. (
+                                        2022060101
+                                        3H
+                                        15M
+                                        1W
+                                        1D )
+@       IN  NS  dns1.shmily-qjj.top.
+@       IN  NS  dns2.shmily-qjj.top.
+
+dns1  IN  A  10.2.5.3
+dns2  IN  A  10.2.5.4
+
+;kdc ldap
+kdc1.shmily-qjj.top IN A 10.2.5.3
+kdc2.shmily-qjj.top IN A 10.2.5.4
+
+;cdh
+cdh101 IN A 10.2.5.101
+cdh102 IN A 10.2.5.102
+cdh103 IN A 10.2.5.103
+cdh104 IN A 10.2.5.104
+
+;other nodes
+node1.shmily-qjj.top IN A 10.2.5.100</code></pre><p>反向解析文件 vim /var/named/ptr.shmily-qjj.top.zone </p>
+<pre><code class="zone">$TTL    1D
+@               IN SOA  dns1.shmily-qjj.top.    admin.shmily-qjj.top. (
+                                        2022060101
+                                        3H
+                                        15M
+                                        1W
+                                        1D )
+@       IN  NS  dns1.shmily-qjj.top.
+@       IN  NS  dns2.shmily-qjj.top.
+
+
+;kdc ldap
+3.5.2 IN PTR kdc1.shmily-qjj.top
+4.5.2 IN PTR kdc2.shmily-qjj.top
+
+;cdh
+101.5.2 IN PTR cdh101
+102.5.2 IN PTR cdh102
+103.5.2 IN PTR cdh103
+104.5.2 IN PTR cdh104
+
+;;other nodes
+100.5.2 IN PTR node1.shmily-qjj.top</code></pre>
+<p>修改备DNS Server上的配置文件/etc/named.conf</p>
+<pre><code class="conf">options {
+        listen-on port 53 { 127.0.0.1;10.2.5.4; };
+        listen-on-v6 {none;};
+        directory       &quot;/var/named&quot;;
+        dump-file       &quot;/var/named/data/cache_dump.db&quot;;
+        statistics-file &quot;/var/named/data/named_stats.txt&quot;;
+        memstatistics-file &quot;/var/named/data/named_mem_stats.txt&quot;;
+        recursing-file  &quot;/var/named/data/named.recursing&quot;;
+        secroots-file   &quot;/var/named/data/named.secroots&quot;;
+        allow-query-cache {any;};
+        allow-query  { 10.2.5.0/8; };
+        forward only;
+        forwarders {10.2.5.2;8.8.8.8;};
+
+        recursion yes;
+        allow-recursion { any;};
+
+        dnssec-enable no;
+        dnssec-validation no;
+        recursive-clients 1000000;
+        tcp-clients 10000;
+        send-cookie no;
+        require-server-cookie no;
+
+        /* Path to ISC DLV key */
+        bindkeys-file &quot;/etc/named.root.key&quot;;
+
+        managed-keys-directory &quot;/var/named/dynamic&quot;;
+
+        pid-file &quot;/run/named/named.pid&quot;;
+        session-keyfile &quot;/run/named/session.key&quot;;
+};
+
+logging {
+        channel default_debug {
+                file &quot;data/named.run&quot;;
+                severity dynamic;
+        };
+};
+
+zone &quot;.&quot; IN {
+        type hint;
+        file &quot;named.ca&quot;;
+};
+
+zone &quot;shmily-qjj.top&quot; IN {
+        type slave;
+        file &quot;slaves/shmily-qjj.top.zone&quot;;
+        notify no;
+        masters { 10.2.5.3; };
+};
+zone &quot;10.in-addr.arpa&quot; IN {
+        type slave;
+        file &quot;slaves/ptr.shmily-qjj.top.zone&quot;;
+        notify no;
+        masters { 10.2.5.3; };
+};
+#include &quot;/etc/named.rfc1912.zones&quot;;
+#include &quot;/etc/named.root.key&quot;;</code></pre>
+<p>两台节点分别启动的DNS服务</p>
+<pre><code class="shell">systemctl enable named
+systemctl start named
+systemctl status named</code></pre>
+<ol start="3">
+<li>rndc同步<br>rndc（Remote Name Domain Controllerr）是一个远程管理bind的工具，通过这个工具可以在本地或者远程了解当前服务器的运行状况，也可以对服务器进行关闭、重载、刷新缓存、增加删除zone等操作。<br>使用rndc可以在不停止DNS服务器工作的情况进行数据的更新，使修改后的配置文件生效。在实际情况下，DNS服务器是非常繁忙的，任何短时间的停顿都会给用户的使用带来影响。因此，使用rndc工具可以使DNS服务器更好地为用户提供服务。在使用rndc管理bind前需要使用rndc生成一对密钥文件，一半保存于rndc的配置文件中，另一半保存于bind主配置文件中。rndc的配置文件为/etc/rndc.conf，在CentOS或者RHEL中，rndc的密钥保存在/etc/rndc.key文件中。rndc默认监听在953号端口（TCP），其实在bind9中rndc默认就是可以使用，不需要配置密钥文件。<br>rndc与DNS服务器实行连接时，需要通过数字证书进行认证，而不是传统的用户名/密码方式。在当前版本下，rndc和named都只支持HMAC-MD5认证算法，在通信两端使用预共享密钥。在当前版本的rndc 和 named中，唯一支持的认证算法是HMAC-MD5，在连接的两端使用共享密钥。它为命令请求和名字服务器的响应提供 TSIG类型的认证。所有经由通道发送的命令都必须被一个服务器所知道的 key_id 签名。为了生成双方都认可的密钥，可以使用rndc-confgen命令产生密钥和相应的配置，再把这些配置分别放入named.conf和rndc的配置文件rndc.conf中。</li>
+</ol>
+<p>修改主节点ZONE配置文件（需要修改ZONE文件的编号）<br><strong>注意：修改了ZONE编号，即使配置没发生变化，配置仍然会同步到备用DNS；未修改ZONE编号，即使配置发生变化，也不会同步到备用DNS</strong><br>vim /var/named/shmily-qjj.top.zone<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Linux/DNS/DNS-1.jpg" alt="alt"><br>执行rndc reload 提示server reload successful证明成功</p>
+<p>验证备节点解析<br>将/etc/resolv.conf中nameserver指向备节点10.2.5.4<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Linux/DNS/DNS-2.jpg" alt="alt"><br>查看备节点目录修改时间<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Linux/DNS/DNS-3.jpg" alt="alt">  </p>
+<h2 id="DNS客户端节点配置"><a href="#DNS客户端节点配置" class="headerlink" title="DNS客户端节点配置"></a>DNS客户端节点配置</h2><p>客户端配置<br>vim /etc/resolv.conf</p>
+<pre><code class="conf">search shmily-qjj.top
+nameserver 10.2.5.3
+nameserver 10.2.5.4</code></pre>
+<p>验证：<br>注释掉/etc/hosts下的ip地址映射<br>安装bind-utils<br>yum install bind-utils<br>正向解析验证<br>nslookup kdc1.shmily-qjj.top<br>nslookup kdc2.shmily-qjj.top<br>nslookup node1.shmily-qjj.top<br>ping kdc1.shmily-qjj.top -c 3<br>ping kdc2.shmily-qjj.top -c 1<br>ping node1.shmily-qjj.top -c 1<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Linux/DNS/DNS-4.jpg" alt="alt">  </p>
+<p>反向解析验证<br>nslookup 10.2.5.3<br>nslookup 10.2.5.100<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/BlogImages-0@master/cdn_sources/Blog_Images/Linux/DNS/DNS-5.jpg" alt="alt">  </p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.jianshu.com/p/f08cf7cebf3f" target="_blank" rel="noopener">bind配置工具rndc使用</a></p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/welcome/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/ee1c2df4/">
+                离线计算
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: 'zUyVEaHo59RUUwiPTChPEeBj-gzGzoHsz',
+			appKey: 'xIEyTcrkTuJLz6ewPbpTj8mz',
+			placeholder: '欢迎评论...',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
 	</div>
 	<div id="footer">
 	<p>
