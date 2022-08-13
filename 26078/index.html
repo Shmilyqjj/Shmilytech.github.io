@@ -618,8 +618,8 @@
 </div>
 
 <div id="article-content">
-	<h1 id="什么是Sqoop"><a href="#什么是Sqoop" class="headerlink" title="什么是Sqoop"></a>什么是Sqoop</h1><p><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/Blog_Images/Sqoop/Sqoop-1.png" alt="alt Sqoop-1"><br>Sqoop是一款开源工具，用于Hadoop(Hive)与mysql等传统数据库间进行数据传递，可以将关系型数据库mysql,Oracle等中的数据导入HDFS中，也可以把HDFS中的数据导入到关系型数据库中。<br>Sqoop2与Sqoop1完全不兼容，一般生产环境使用Sqoop1，这里主要说Sqoop1  </p>
-<h2 id="Sqoop原理"><a href="#Sqoop原理" class="headerlink" title="Sqoop原理"></a>Sqoop原理</h2><p>Sqoop原理很简单，就是将导入导出的命令翻译成MapReduce程序，Sqoop的操作主要目的（工作）是对MR程序的inputformat和outputformat进行定制.<br>下图是Sqoop原理架构图<br><img src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/Blog_Images/Sqoop/Sqoop-2.png" alt="alt Sqoop-2"><br>图上意思很明确，这里不多赘述。<br>戳<strong><a href="http://sqoop.apache.org/" target="_blank" rel="noopener">官方文档</a></strong>了解更多</p>
+	<h1 id="什么是Sqoop"><a href="#什么是Sqoop" class="headerlink" title="什么是Sqoop"></a>什么是Sqoop</h1><p><img src="http://imgs.shmily-qjj.top/BlogImages/Sqoop/Sqoop-1.png" alt="alt Sqoop-1"><br>Sqoop是一款开源工具，用于Hadoop(Hive)与mysql等传统数据库间进行数据传递，可以将关系型数据库mysql,Oracle等中的数据导入HDFS中，也可以把HDFS中的数据导入到关系型数据库中。<br>Sqoop2与Sqoop1完全不兼容，一般生产环境使用Sqoop1，这里主要说Sqoop1  </p>
+<h2 id="Sqoop原理"><a href="#Sqoop原理" class="headerlink" title="Sqoop原理"></a>Sqoop原理</h2><p>Sqoop原理很简单，就是将导入导出的命令翻译成MapReduce程序，Sqoop的操作主要目的（工作）是对MR程序的inputformat和outputformat进行定制.<br>下图是Sqoop原理架构图<br><img src="http://imgs.shmily-qjj.top/BlogImages/Sqoop/Sqoop-2.png" alt="alt Sqoop-2"><br>图上意思很明确，这里不多赘述。<br>戳<strong><a href="http://sqoop.apache.org/" target="_blank" rel="noopener">官方文档</a></strong>了解更多</p>
 <h2 id="Sqoop安装部署"><a href="#Sqoop安装部署" class="headerlink" title="Sqoop安装部署"></a>Sqoop安装部署</h2><p>去官网<a href="http://www.apache.org/dyn/closer.lua/sqoop/" target="_blank" rel="noopener">下载Sqoop</a>的二进制包  </p>
 <pre><code class="shell"> tar -zxvf sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz -C /opt/module/
  cd /opt/module/
@@ -641,6 +641,9 @@
  export HBASE_HOME=/opt/module/hbase
  export ZOOKEEPER_HOME=/opt/module/zookeeper-3.4.13
  export ZOOCFGDIR=/opt/module/zookeeper-3.4.13/conf
+ # SQOOP写哪个集群，用哪个Yarn，用以下Hive、Hadoop客户端配置指定到sqoop-env.sh
+ export HADOOP_CONF_DIR=/etc/hadoop/cluster_client_conf/hadoop-conf/
+ export HIVE_CONF_DIR=/etc/hadoop/cluster_client_conf/hive-conf/
 
  拷贝mysql驱动到Sqoop的lib目录下
  cp mysql-connector-java-5.1.27-bin.jar /opt/module/sqoop/lib/
@@ -772,7 +775,7 @@ sqoop_test
 
 执行该任务:
 sqoop --options-file hdfs_to_mysql_job</code></pre>
-<h2 id="Sqoop参数中文参考文档"><a href="#Sqoop参数中文参考文档" class="headerlink" title="Sqoop参数中文参考文档"></a>Sqoop参数中文参考文档</h2><p>Sqoop参数中文文档，里面还包括了参数的实现类类名，供参考和深入学习，点击链接下载:<br><a href="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/Blog_Images/Sqoop/Sqoop参数-PDF版.pdf" target="_blank" rel="noopener">Sqoop参数-PDF版</a></p>
+<h2 id="Sqoop参数中文参考文档"><a href="#Sqoop参数中文参考文档" class="headerlink" title="Sqoop参数中文参考文档"></a>Sqoop参数中文参考文档</h2><p>Sqoop参数中文文档，里面还包括了参数的实现类类名，供参考和深入学习，点击链接下载:<br><a href="http://imgs.shmily-qjj.top/BlogImages/Sqoop/Sqoop参数-PDF版.pdf" target="_blank" rel="noopener">Sqoop参数-PDF版</a></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>强行结束MR任务后，不急着再启MR任务，MRAppMaster任务需要kill掉再运行新任务</li>
 <li>多看官方文档，里面很详细</li>
