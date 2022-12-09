@@ -437,6 +437,18 @@ SELECT * FROM (
         (2, 'b', ARRAY[4, 5, 6]),
         (3, 'c', ARRAY[7, 8, 9])
 ) AS t (id, name, arr);
+-- 准备好执行语句,延迟执行
+PREPARE statement_1 FROM
+show tables;
+PREPARE statement_2 FROM
+select * from test;
+EXECUTE statement_2;
+EXECUTE statement_1;
+DEALLOCATE PREPARE statement_1;
+DEALLOCATE PREPARE statement_2;
+-- timestamp字段过滤条件 kafka_timestamp字段类型为timestamp(6)
+select appid from iceberg.iceberg_db.iceberg_table where ds='2022120910' and kafka_timestamp = from_unixtime(1670625207.945);  -- 效率更高
+select appid from iceberg.iceberg_db.iceberg_table where ds='2022120910' and to_unixtime(kafka_timestamp) = 1670525207.945;
 ```
 Presto支持事务，相关命令有[COMMIT](https://prestodb.io/docs/current/sql/commit.html),[START TRANSACTION](https://prestodb.io/docs/current/sql/start-transaction.html),[ROLLBACK](https://prestodb.io/docs/current/sql/rollback.html)
 更多语法：[SQL Statement Syntax](https://prestodb.io/docs/current/sql.html#)
