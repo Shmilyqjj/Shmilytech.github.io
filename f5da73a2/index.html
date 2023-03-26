@@ -68,19 +68,19 @@
 	<ul id="menu">
 		<li class="menu-item">
 			<a href="https://shmily-qjj.top/" class="menu-item-link" target="_self">
-				<input type="image" src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/img/logo/gotoMain.png" width="90" height="35" alt="回到主站"/>
+				<input type="image" src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/Resources/img/logo/gotoMain.png" width="90" height="35" alt="回到主站"/>
 			</a>
 		</li>
 		<li class="menu-item">
 			<a href="https://shmily-qjj.top/about/" target="_blank" rel="noopener" class="menu-item-link">
-				<input type="image" src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/img/logo/aboutMe.png" width="90" height="35" alt="关于我"/>
+				<input type="image" src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/Resources/img/logo/aboutMe.png" width="90" height="35" alt="关于我"/>
 			</a>
 		</li>
 
 		<li class="menu-item">
 			<a href="https://github.com/Shmilyqjj" class="menu-item-link" target="_blank">
 <!--				<i class="fa fa-github fa-2x"></i>-->
-				<input type="image" src="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmily-Web@master/cdn_sources/img/logo/myGithub.png" width="90" height="35" alt="关于我"/>
+				<input type="image" src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/Resources/img/logo/myGithub.png" width="90" height="35" alt="关于我"/>
 			</a>
 		</li>
 	</ul>
@@ -533,6 +533,15 @@
 								<div class="article-toc" style="display: none;"></div>
 							</ul>
 			
+							<ul>
+								<li class="file">
+									<a href="/38dd005e/">
+										Iceberg数据湖探索与实践
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
 								</li>
 								
 							</ul>
@@ -672,9 +681,9 @@
 <li>静态数据脱敏SDM(Static Data Masking)<br>一般用在非生产环境，数据是从生产环境经过脱敏后再在非生产环境使用。解决的问题：测试环境开发库需要生产库的数据量和数据格式方便排查问题或进行分析，但又不能将敏感数据放在非生产环境的场景</li>
 <li>动态数据脱敏DDM(Dynamic Data Masking)<br>一般同在生产环境，访问敏感数据时进行动态脱敏。解决的问题：生产环境根据不同场景不同用户对敏感数据采用不同脱敏级别和脱敏算法进行脱敏</li>
 </ul>
-<h2 id="大数据脱敏技术方案"><a href="#大数据脱敏技术方案" class="headerlink" title="大数据脱敏技术方案"></a>大数据脱敏技术方案</h2><p>先上一个总体的脑图：<a href="http://imgs.shmily-qjj.top/BlogImages/DataMasking/数据脱敏脑图.xmind" target="_blank" rel="noopener">数据脱敏脑图XMIND</a></p>
+<h2 id="大数据脱敏技术方案"><a href="#大数据脱敏技术方案" class="headerlink" title="大数据脱敏技术方案"></a>大数据脱敏技术方案</h2><p>先上一个总体的脑图：<a href="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/BlogImages/DataMasking/数据脱敏脑图.xmind" target="_blank" rel="noopener">数据脱敏脑图XMIND</a></p>
 <h3 id="批量数据脱敏"><a href="#批量数据脱敏" class="headerlink" title="批量数据脱敏"></a>批量数据脱敏</h3><ol>
-<li><p>先将数据同步到数据仓库的一个中间表，然后通过一些自定义的脱敏函数udf进行数据脱敏，然后将未脱敏的中间表删除或通过权限管控起来即可。对于存量数据也是经过UDF处理后得到脱敏数据。<br><img src="http://imgs.shmily-qjj.top/BlogImages/DataMasking/DataMasking-1.JPG" alt="alt DataMasking-1"><br>手机号脱敏UDF示例:</p>
+<li><p>先将数据同步到数据仓库的一个中间表，然后通过一些自定义的脱敏函数udf进行数据脱敏，然后将未脱敏的中间表删除或通过权限管控起来即可。对于存量数据也是经过UDF处理后得到脱敏数据。<br><img src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/BlogImages/DataMasking/DataMasking-1.JPG" alt="alt DataMasking-1"><br>手机号脱敏UDF示例:</p>
 <pre><code class="java">package top.shmily.qjj;
 import org.apache.hadoop.hive.ql.exec.Description;
 import org.apache.hadoop.hive.ql.exec.UDF;
@@ -701,9 +710,9 @@ return phone;
 </li>
 </ol>
 <h3 id="实时数据脱敏"><a href="#实时数据脱敏" class="headerlink" title="实时数据脱敏"></a>实时数据脱敏</h3><ol>
-<li>实时数据结合历史数据通过中间件进入Flink或Storm程序，这时只有实时数据，不适用基于全量数据的脱敏算法，所以结合历史数据和相应算法进行实时脱敏。<br><img src="http://imgs.shmily-qjj.top/BlogImages/DataMasking/DataMasking-2.JPG" alt="alt DataMasking-2"></li>
+<li>实时数据结合历史数据通过中间件进入Flink或Storm程序，这时只有实时数据，不适用基于全量数据的脱敏算法，所以结合历史数据和相应算法进行实时脱敏。<br><img src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/BlogImages/DataMasking/DataMasking-2.JPG" alt="alt DataMasking-2"></li>
 </ol>
-<h3 id="数据安全审计"><a href="#数据安全审计" class="headerlink" title="数据安全审计"></a>数据安全审计</h3><p>数据安全审计，目前业界常用的就是ELK(Es+LogStash+Kibana)，下面是用于大数据审计的流程<br><img src="http://imgs.shmily-qjj.top/BlogImages/DataMasking/DataMasking-3.JPG" alt="alt DataMasking-3"></p>
+<h3 id="数据安全审计"><a href="#数据安全审计" class="headerlink" title="数据安全审计"></a>数据安全审计</h3><p>数据安全审计，目前业界常用的就是ELK(Es+LogStash+Kibana)，下面是用于大数据审计的流程<br><img src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/BlogImages/DataMasking/DataMasking-3.JPG" alt="alt DataMasking-3"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
 <li>脱敏的过程就是一个在数据安全性和数据可用性之间平衡的过程</li>
 <li>选择或设计一种既能满足开发测试外包的要求，又能保证安全性的脱敏算法特别重要</li>
