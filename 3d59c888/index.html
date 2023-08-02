@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		Hive列级血缘与元数据收集 | 
+	 
+	佳境的技术专区
+	</title>
+	
+	<!-- keywords,description -->
+	
+		<meta name="keywords" content="血缘," />
+	 
+		<meta name="description" content="Hive列级血缘与元数据实时收集" />
+	
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/Shmilyqjj/Shmilytech.github.io@hexo/themes/hexo-theme-tree/source/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">佳境的技术专区</a>
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="https://shmily-qjj.top/" class="menu-item-link" target="_self">
+				<input type="image" src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/Resources/img/logo/gotoMain.png" width="90" height="35" alt="回到主站"/>
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://shmily-qjj.top/about/" target="_blank" rel="noopener" class="menu-item-link">
+				<input type="image" src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/Resources/img/logo/aboutMe.png" width="90" height="35" alt="关于我"/>
+			</a>
+		</li>
+
+		<li class="menu-item">
+			<a href="https://github.com/Shmilyqjj" class="menu-item-link" target="_blank">
+<!--				<i class="fa fa-github fa-2x"></i>-->
+				<input type="image" src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/Resources/img/logo/myGithub.png" width="90" height="35" alt="关于我"/>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01数据结构与算法
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/6a894937/">
+										基础算法学习
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02计算机网络
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/39a9ed67/">
+										Linux Bind服务配置DNS解析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03操作体统
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/3f34ebe3/">
+										基于Manjaro KDE版打造美观舒适开发环境
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04编程语言
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Java
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/508b5c7/">
+										系统学习JVM
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/6f97dc89/">
+										线程进程与锁
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										Python
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/2ed52290/">
+										高效运行Python方案
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										05数据库
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										MySQL
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										原理深入
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/7c15e85/">
+										MySQL索引原理深入
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/1f7eb1b3/">
+										数据库事务ACID理解
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										操作
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/3c26421b/">
+										Mysql Event Scheduler
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/96009187/">
+										浅谈group by与distinct去重
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										06分布式
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/4a17b156/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										07容器
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/4a17b156/">
+										hello-world
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										08大数据
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										交互查询
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/5f26355/">
+										Apache Kudu总结
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/1ae37d82/">
+										Impala-基于内存的高效SQL交互查询引擎
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/4c197c46/">
+										Presto-基于内存的高效SQL交互查询引擎
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										其他
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/4b21953d/">
+										分享我的技术调研流程
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/39595/">
+										记一次参加QCon全球软件开发大会
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/BigdataExceptionsSummary/">
+										大数据平台常见异常处理汇总
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										平台运维
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/38328/">
+										CentOS7安装CDH6全程记录
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据仓库
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/84534d72/">
+										SeaTunnel开源数据同步平台
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/26078/">
+										Sqoop学习笔记
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据可视化
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/174820fd/">
+										Apache Zeppelin初探
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据安全
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/f5da73a2/">
+										大数据脱敏方案调研
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/4cf161e5/">
+										实现基于Spark的数据脱敏
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据治理
+									</a>
+									
+							<ul>
+								<li class="file active">
+									<a href="/3d59c888/">
+										Hive列级血缘与元数据收集
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										数据湖
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/44511/">
+										Alluxio-基于内存的虚拟分布式存储系统
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/38dd005e/">
+										Iceberg数据湖探索与实践
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										离线计算
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/7fbbfd34/">
+										Hive3.x新特性
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/ee1c2df4/">
+										Kyuubi原理与替代SparkThriftServer实践
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/pyspark_pandas/">
+										使用PySpark优化Pandas
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/welcome/">
+										欢迎
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	Hive列级血缘与元数据收集
+</h1>
+<div class="article-meta">
+	
+	<span>佳境Shmily</span>
+	<span>2023-08-02 12:16:00</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/技术/">技术</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<h1 id="Hive列级血缘与元数据收集"><a href="#Hive列级血缘与元数据收集" class="headerlink" title="Hive列级血缘与元数据收集"></a>Hive列级血缘与元数据收集</h1><h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>大数据离线计算里不开Hive,而数据字典与数据血缘在数据治理中是最基本和必要的。数据字典和数据血缘可以大幅提升数据分析效率，方便分析人员快速了解业务。本文主要基于<strong>Hive 3.x</strong>实现列级血缘与元数据收集。</p>
+<h2 id="列级血缘收集"><a href="#列级血缘收集" class="headerlink" title="列级血缘收集"></a>列级血缘收集</h2><p><strong>思路</strong>：使用Hive Hook机制零侵入实现列级血缘的收集。参考Hive源码中<strong>org.apache.hadoop.hive.ql.hooks.LineageLogger</strong>类，对其进行改造，即可实现列级别血缘关系的收集。</p>
+<p><strong>Hook实现代码</strong>：<a href="https://github.com/Shmilyqjj/ColumnLevelLineageListener/blob/master/hive-lineages-collector/src/main/java/top/qjj/shmily/lineage/ColumnLevelLineageHook.java" target="_blank" rel="noopener"><strong>ColumnLevelLineageHook.java</strong></a></p>
+<p><strong>Hook部署</strong>：打jar包，放入$HIVE_HOME/auxlib/下，修改hive-site.xml如下  </p>
+<pre><code class="xml">  &lt;property&gt;
+    &lt;name&gt;hive.exec.post.hooks&lt;/name&gt;
+    &lt;value&gt;org.apache.hadoop.hive.ql.hooks.LineageLogger,top.qjj.shmily.lineage.ColumnLevelLineageHook&lt;/value&gt;
+  &lt;/property&gt;
+  &lt;property&gt;
+    &lt;name&gt;column.lineage.enabled&lt;/name&gt;
+    &lt;value&gt;true&lt;/value&gt;
+  &lt;/property&gt;</code></pre>
+<p><strong>注意事项</strong>：hive.exec.post.hooks配置项需带有Hive原生Hook类org.apache.hadoop.hive.ql.hooks.LineageLogger，否则无法获取到列级别的血缘关系，原因见<strong>org/apache/hadoop/hive/ql/optimizer/Optimizer.java:78</strong><br><img src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/BlogImages/Hive/MetadataAndLineage/HiveLineage-1.png" alt="alt"><br>只有指定了org.apache.hadoop.hive.ql.hooks.LineageLogger，才会添加Generator来生成列级血缘，否则默认针对其他Hook不收集列级别血缘。</p>
+<h2 id="元数据实时收集"><a href="#元数据实时收集" class="headerlink" title="元数据实时收集"></a>元数据实时收集</h2><p><strong>思路</strong>：使用Hive Metastore Listener零侵入实现实时收集Hive元数据变更，参考源码中<strong>org.apache.hive.hcatalog.listener.DbNotificationListener</strong>或<strong>org.apache.hive.hcatalog.listener.NotificationListener</strong>类实现。</p>
+<p><strong>Listener实现代码</strong>：<a href="https://github.com/Shmilyqjj/ColumnLevelLineageListener/blob/master/hive-metadata-collector/src/main/java/top/qjj/shmily/metadata/MetadataListener.java" target="_blank" rel="noopener"><strong>MetadataListener.java</strong></a></p>
+<p><strong>Listener部署</strong>：打jar包，放入$HIVE_HOME/lib下，修改hive-site.xml如下</p>
+<pre><code class="xml">  &lt;property&gt;
+    &lt;name&gt;hive.metastore.event.listeners&lt;/name&gt;
+    &lt;value&gt;top.qjj.shmily.metadata.MetadataListener&lt;/value&gt;
+  &lt;/property&gt;
+  &lt;property&gt;
+    &lt;name&gt;metadata.listener.service.name&lt;/name&gt;
+    &lt;value&gt;hive_local&lt;/value&gt;
+  &lt;/property&gt;
+  &lt;property&gt;
+    &lt;name&gt;metadata.listener.meta.server.rest&lt;/name&gt;
+    &lt;value&gt;http://host:port/metadata/receive&lt;/value&gt;
+  &lt;/property&gt;</code></pre>
+<p><strong>注意事项</strong>：</p>
+<ol>
+<li>metadata.listener.service.name可以指定你的集群名称，用于区分多集群，影响输出结果中database\table的fqn(唯一标识)</li>
+<li>metadata.listener.meta.server.rest指定元数据上报地址</li>
+<li>可以开启lastAccessTime属性统计，通过如下Hive原生参数<pre><code class="xml">&lt;property&gt;
+&lt;name&gt;hive.security.authorization.sqlstd.confwhitelist.append&lt;/name&gt;
+&lt;!-- &lt;value&gt;hive\.exec\.pre\.hooks&lt;/value&gt; --&gt;
+&lt;value&gt;hive\.*&lt;/value&gt;
+&lt;/property&gt;
+&lt;property&gt;
+&lt;name&gt;hive.exec.pre.hooks&lt;/name&gt;
+&lt;value&gt;org.apache.hadoop.hive.ql.hooks.UpdateInputAccessTimeHook$PreExec&lt;/value&gt;
+&lt;/property&gt;</code></pre>
+</li>
+<li>可以开启表统计信息，参数为hive.stats.autogather=true，会额外收集到如下信息<pre><code class="text">last_modified_by        xxxxx           
+last_modified_time      1690965029          
+numFiles                11                  
+numRows                 10                  
+rawDataSize             34                  
+totalSize               2433                
+transient_lastDdlTime   1690965096</code></pre>
+不建议在全局参数设置该参数，会影响写入性能，但可以针对部分表单独设置  <pre><code class="sql">ALTER TABLE table_name SET TBLPROPERTIES (&#39;hive.stats.autogather&#39;=&#39;true&#39;);</code></pre>
+</li>
+</ol>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+              <a href="/welcome/">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                  
+              </a>
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/38dd005e/">
+                Iceberg数据湖探索与实践
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: 'zUyVEaHo59RUUwiPTChPEeBj-gzGzoHsz',
+			appKey: 'xIEyTcrkTuJLz6ewPbpTj8mz',
+			placeholder: '欢迎评论...',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2020-<span id="footerYear"></span> 
+	<a href="/">佳境Shmily</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Theme <a href="//github.com/wujun234/hexo-theme-tree" target="_blank">Tree</a>
+	by <a href="//github.com/wujun234" target="_blank">WuJun</a>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>
