@@ -787,14 +787,14 @@ sudo pacman -S yay
 yay --aururl https://aur.tuna.tsinghua.edu.cn --save
 sudo pacman -Sy base-devel
 yay -S com.qq.weixin.spark
-yay -S com.qq.tim.spark
+yay -S linuxqq
 yay -S ocs-url
 增大dpi避免窗口和字体过小（在打开的窗口中设置 2k屏幕建议值168-192）：
 env WINEPREFIX=/home/shmily/.deepinwine/Spark-WeChat/ deepin-wine5 winecfg
 env WINEPREFIX=/home/shmily/.deepinwine/Spark-TIM/ deepin-wine5 winecfg
 -------------------------------------------------------------------------------------------------------
 sudo pacman -S google-chrome  # Chrome
-sudo pacman -S netease-cloud-music  # 网易云音乐
+yay -S yesplaymusic  # (推荐代替sudo pacman -S netease-cloud-music网易云音乐)代替网易云音乐Linux客户端的音乐软件
 yay -S tenvideo # 腾讯视频
 sudo pacman -S unrar unzip p7zip  # 解压
 ### 安装WPS：软件商店安装如下包：wps-office-cn wps-office-mui-zh-cn wps-office-mime-cn ttf-wps-fonts
@@ -802,8 +802,26 @@ sudo pacman -S gimp  # 修图
 sudo pacman -S kdenlive # 视频编辑 (可在应用商店安装选更多功能插件)
 sudo pacman -S neofetch screenfetch  # 输出系统信息
 -------------------------------------------------------------------------------------------------------
-yay -S todesk;sudo systemctl enable todeskd.service;sudo systemctl start todeskd.service;sudo systemctl status todeskd.service #远程桌面工具
-### 远程桌面连接工具remmina
+#远程桌面工具
+1. x11vnc
+linux x11vnc 远程桌面（X11桌面环境适用，不适用于wayland）
+服务端配置：
+sudo pacman -S x11vnc   # 安装x11vnc
+x11vnc -storepasswd     # 设置VNC的连接密码
+vim x11vnc-start.sh     # x11vnc服务启动脚本
+  #!/bin/bash 
+  x11vnc -display :0 -forever -shared -rfbauth ~/.vnc/passwd -bg -o /tmp/x11vnc.log -rfbport 5900 -ncache 10 -ncache_cr
+将VNC Server设置成随系统启动后自动在后台启动
+将x11vnc-start.sh添加到 设置-&gt;开机与关机-&gt;自动启动 中 
+手动执行x11vnc-start.sh或重启Linux系统
+远程连接工具
+Windows：RealVNC Viewer
+Linux： Remmina
+2.anydesk
+yay -S anydesk
+3.todesk
+yay -S todesk;sudo systemctl enable todeskd.service;sudo systemctl start todeskd.service;sudo systemctl status todeskd.service 
+### 远程桌面连接客户端remmina
 sudo pacman -S remmina
 安装工程会提示
 remmina 的可选依赖
@@ -938,6 +956,17 @@ yay -S jd-gui
 Python源切换
 sudo pip config --global set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 sudo pip config --global set install.trusted-host pypi.tuna.tsinghua.edu.cn
+Anaconda安装
+sudo pacman -S anaconda
+sudo vim /etc/profile增加
+export PATH=/opt/anaconda/bin:$PATH
+source  /etc/profile
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+Python环境配置
+conda create -n py310_auto_gpt python=3.10
+激活环境conda activate py310_auto_gpt 取消激活conda deactivate
+查看已有环境conda info -e
+删除某个环境conda remove -n py310_auto_gpt --all
 ----------------------------------------------------------------------------------------
 Mysql安装：
 pacman -Si mysql     # 查看仓库中的MySQL版本号
@@ -1019,7 +1048,13 @@ A684C2DC 0B1583D4 19CBD290 217618CD
 5653E0A0 BACE3948 BB2EE45E 422D2C87
 DD9AF44B 99C49590 D2DBDEE1 75860FD2
 8C8BB2AD B2ECE5A4 EFC08AF2 25A9B864
------- END LICENSE ------​</code></pre>
+------ END LICENSE ------​
+# DBeaver 数据库管理工具安装
+sudo pacman -S dbeaver
+修改DBeaver默认JDK版本为JDK11以上:
+sudo vim /usr/lib/dbeaver/dbeaver.ini 添加
+-vm 
+/usr/java/jdk-11.0.16/bin</code></pre>
 <h3 id="虚拟机软件安装"><a href="#虚拟机软件安装" class="headerlink" title="虚拟机软件安装"></a>虚拟机软件安装</h3><p>安装VirtualBox:<br>mhwd-kernel -li  (当前系统是linux510，则安装linux510-virtualbox-host-modules)<br>sudo pacman -Syu virtualbox linux510-virtualbox-host-modules<br>重启或执行sudo vboxreload</p>
 <p>安装KVM（备选）：<br>pacman -S qemu libvirt ovmf virt-manager<br>（kvm负责CPU和内存的虚拟化，qemu向Guest OS模拟硬件，ovmf为虚拟机启用UEFI支持，libvirt提供管理虚拟机和其它虚拟化功能的工具和API，virt-manager是管理虚拟机的GUI）<br>systemctl enable libvirtd<br>systemctl start libvirtd<br>usermod -a -G kvm shmily<br>启动qem/virt-manager</p>
 <h3 id="安卓应用支持"><a href="#安卓应用支持" class="headerlink" title="安卓应用支持"></a>安卓应用支持</h3><p>参考UOS(Deepin)对于安卓应用支持的解决方案，采用XDroid作为安卓应用支持软件。<br>先下载XDroid软件：<a href="https://www.linzhuotech.com/Product/download" target="_blank" rel="noopener">官网下载XDroid</a><br>执行tar -zxvf xDroidInstall-x86_64-vxxxx.tar.gz 解压<br>执行 ./xDroidInstall-x86_64-vxxxx.run 安装XDroid<br>安装后重启一到两次即可完成安装<br>应用商城<br><img src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/BlogImages/Manjaro/ManjaroInstall-38.png" alt="alt "><br>已安装应用<br><img src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/BlogImages/Manjaro/ManjaroInstall-39.png" alt="alt "><br>使用Android APP<br><img src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/BlogImages/Manjaro/ManjaroInstall-40.png" alt="alt "> </p>
@@ -1141,7 +1176,19 @@ sudo chmod 1777 $TARGET_MOUNT_POINT
 sudo mount -t ntfs -o rw $current_point $TARGET_MOUNT_POINT
 echo &quot;All Done&quot;</code></pre>
 <p>将系统默认挂载点重新挂载为自定义的挂载点 用法sh fix_ntfs_disk_rw.sh /run/media/shmily/Entertainment /Entertainment</p>
-<h3 id="系统清理"><a href="#系统清理" class="headerlink" title="系统清理"></a>系统清理</h3><p>内存清理<br>sudo su<br>sync<br>echo 1 &gt; /proc/sys/vm/drop_caches<br>echo 2 &gt; /proc/sys/vm/drop_caches<br>echo 3 &gt; /proc/sys/vm/drop_caches<br>日志清理<br>journalctl –disk-usage 查看日志占用<br>sudo journalctl –vacuum-size=500M  限制归档日志大小，对日志做清除操作，适用于/var占用较大的场景</p>
+<h3 id="系统清理"><a href="#系统清理" class="headerlink" title="系统清理"></a>系统清理</h3><p>内存清理<br>sudo su<br>sync<br>echo 1 &gt; /proc/sys/vm/drop_caches<br>echo 2 &gt; /proc/sys/vm/drop_caches<br>echo 3 &gt; /proc/sys/vm/drop_caches<br>日志清理<br>journalctl –disk-usage 查看日志占用<br>sudo journalctl –vacuum-size=500M  限制归档日志大小，对日志做清除操作，适用于/var占用较大的场景<br>pacman安装包清理<br>sudo pacman -Scc<br>其他数据清理与空间释放-&gt;结合Filelight工具查看文件大小分布,进而手动清理</p>
+<h3 id="内存管理优化"><a href="#内存管理优化" class="headerlink" title="内存管理优化"></a>内存管理优化</h3><p>系统原生内存管理问题: 内存用尽时会导致系统卡死无法操作,等待OOM-Killer机制释放要很久,影响系统使用体验<br>由于Linux内核的oom-killer机制不够完善,一旦系统内存爆满,会出现系统卡死,等待很长时间才会kill掉占用较大的进程.<br>所以使用earlyoom进行早期的内存管理,及时杀进程以避免系统卡死</p>
+<pre><code class="shell">sudo pacman -S earlyoom
+systemctl enable earlyoom;systemctl start earlyoom;systemctl status earlyoom </code></pre>
+<p>配置earlyoom:<br>默认配置:<br>剩余可用物理内存小于 10% 和 剩余交换内存小于10%时，就会触发早期OOM<br>SIGTERM when mem &lt;= 10 % and swap &lt;= 10 %,<br>SIGKILL when mem &lt;= 5 % and swap &lt;= 5 %<br>如果觉得剩余内存保留太多，可以编辑 earlyoom 的配置文件 vim /etc/default/earlyoom<br>编辑好配置文件后 重启服务生效配置systemctl restart earlyoom<br>建议配置:EARLYOOM_ARGS=”-r 60 -m 1 -s 5 –avoid ‘(^|/)(init|Xorg|sshd)$’”<br>参数解释:<br>-r 60 代表每60秒打印一次内存统计信息<br>-m 1 代表保留物理内存为1%<br>-s 5 代表保留交换内存为5%<br>–avoid ‘(^|/)(init|Xorg|sshd)$’ 代表任何时候不要杀死名字带有 init，Xorg，sshd 的进程</p>
+<h3 id="SWAP优化"><a href="#SWAP优化" class="headerlink" title="SWAP优化"></a>SWAP优化</h3><pre><code class="shell"># 临时降低使用swap的权重(使用swap的积极程度)
+配置 sudo sysctl vm.swappiness=20   (0-100 数值越大,越积极使用Swap)
+查看 cat /proc/sys/vm/swappiness
+# 永久生效降低使用swap权重 
+vim /etc/sysctl.conf
+vm.swappiness=20
+# 刷新生效
+sysctl -p</code></pre>
 <h3 id="搜索工具"><a href="#搜索工具" class="headerlink" title="搜索工具"></a>搜索工具</h3><p>Alt+Space 全局搜索工具 会在桌面上方弹出搜索框 可以搜索应用、文件、目录、服务、设置等<br><img src="https://blog-images-1257889704.cos.ap-chengdu.myqcloud.com/BlogImages/Manjaro/ManjaroInstall-36.png" alt="alt "> </p>
 <h3 id="解决thermal误报导致自动关机"><a href="#解决thermal误报导致自动关机" class="headerlink" title="解决thermal误报导致自动关机"></a>解决thermal误报导致自动关机</h3><p>报错kernel: thermal thermal_zone3: critical temperature reached (125 C), shutting down  直接被关机<br>sudo chmod 665 /sys/class/thermal/thermal_zone3/mode<br>sudo echo “disabled” &gt; /sys/class/thermal/thermal_zone3/mode<br>这个参数需要每次系统启动时重新写入,放入开机启动脚本路径/etc/rc.local.d/</p>
 <h3 id="bash下所有命令均不可用"><a href="#bash下所有命令均不可用" class="headerlink" title="bash下所有命令均不可用"></a>bash下所有命令均不可用</h3><p>原因:可能存在错误的环境变量配置,不过不影响zsh因为zsh是单独的.zshrc配置文件<br>修复: 在~/.bashrc末尾加上如下内容 修复PATH<br>export PATH=”$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games”</p>
@@ -1252,9 +1299,13 @@ systemctl --user status pipewire
 sudo killall pulseaudio
 systemctl --user restart pulseaudio.service
 systemctl --user restart pulseaudio.socket</code></pre>
-<h3 id="系统硬件信息查询"><a href="#系统硬件信息查询" class="headerlink" title="系统硬件信息查询"></a>系统硬件信息查询</h3><p>全部硬件信息输出：</p>
-<pre><code class="shell"> sudo dmidecode  &gt;&gt; hardware.info
- hwinfo</code></pre>
+<h3 id="系统信息查询"><a href="#系统信息查询" class="headerlink" title="系统信息查询"></a>系统信息查询</h3><ol>
+<li>全部硬件信息输出：<pre><code class="shell">sudo dmidecode  &gt;&gt; hardware.info
+hwinfo</code></pre>
+</li>
+<li>查看开机记录<pre><code class="shell">last reboot</code></pre>
+</li>
+</ol>
 <h3 id="钉钉Linux版无法输入中文"><a href="#钉钉Linux版无法输入中文" class="headerlink" title="钉钉Linux版无法输入中文"></a>钉钉Linux版无法输入中文</h3><p>sudo vim /usr/bin/dingtalk 在 export PATH 后面加如下两行</p>
 <pre><code>export XMODIFIERS=&quot;@im=ibus&quot;
 export QT_IM_MODULE=&quot;ibus&quot;</code></pre><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://wiki.manjaro.org/index.php?title=Main_Page" target="_blank" rel="noopener">Manjaro Wiki</a><br><a href="https://www.zhihu.com/question/333951476/answer/1280162871" target="_blank" rel="noopener">Manjaro Gnome 下fcitx5的安装</a><br><a href="https://github.com/hosxy/Fcitx5-Material-Color" target="_blank" rel="noopener">Fcitx5-Material-Color</a><br><a href="https://wiki.archlinux.org/" target="_blank" rel="noopener">ArchLinux Wiki</a><br><a href="https://github.com/syncthing/syncthing" target="_blank" rel="noopener">Syncthing</a><br><a href="https://blog.csdn.net/uniondong/article/details/98392738" target="_blank" rel="noopener">Manjaro安装Mysql8.0（血泪篇）</a><br><a href="https://www.cnblogs.com/orginly/p/14806538.html" target="_blank" rel="noopener">archlinux Timeshift系统备份与还原</a><br><a href="https://blog.csdn.net/zbgjhy88/article/details/85110956" target="_blank" rel="noopener">轻松上手Manjaro之Manjaro下使用Wine</a><br><a href="https://blog.csdn.net/weixin_43372529/article/details/112190604" target="_blank" rel="noopener">Manjaro-KDE安装动态桌面插件</a><br><a href="https://blog.csdn.net/hqsiswiliam/article/details/105574212" target="_blank" rel="noopener">如何让Ubuntu系统支持LDAC，APTX，AAC编码（提升蓝牙音质）</a><br><a href="https://wiki.archlinux.org/title/PulseAudio" target="_blank" rel="noopener">PulseAudio - ArchLinux Wiki</a></p>
